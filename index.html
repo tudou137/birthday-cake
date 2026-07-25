@@ -1,0 +1,4452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>祝小彭生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        :root {
+            --bg-1: #f3e8ff;
+            --bg-2: #ede9fe;
+            --bg-3: #fae8ff;
+            --glow-1: #d8b4fe;
+            --glow-2: #e9d5ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 50%, var(--bg-3) 100%);
+            overflow: hidden;
+            position: relative;
+            transition: background 0.6s ease;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: var(--glow-1);
+            top: -150px;
+            left: -100px;
+            animation: floatOrb1 20s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 600px;
+            height: 600px;
+            background: var(--glow-2);
+            bottom: -200px;
+            right: -150px;
+            animation: floatOrb2 25s ease-in-out infinite;
+        }
+
+        @keyframes floatOrb1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, 50px) scale(1.1); }
+            66% { transform: translate(50px, 100px) scale(0.9); }
+        }
+
+        @keyframes floatOrb2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-80px, -60px) scale(1.15); }
+            66% { transform: translate(-60px, -80px) scale(0.85); }
+        }
+
+        body .bg-orb-3 {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            width: 450px;
+            height: 450px;
+            background: var(--glow-1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: floatOrb3 18s ease-in-out infinite;
+        }
+
+        @keyframes floatOrb3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+            50% { transform: translate(-50%, -40%) scale(1.2); opacity: 0.6; }
+        }
+
+        #stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 黑色庆典页面 */
+        .celebration-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 500;
+            display: none;
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .celebration-page.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        #celebrationCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #celebrationVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+            z-index: 10;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        #celebrationVideo.show {
+            display: block;
+            opacity: 1;
+        }
+        .celebration-return-btn {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            z-index: 600;
+            padding: 18px 70px;
+            font-size: 20px;
+            font-weight: 500;
+            color: #fff;
+            background: linear-gradient(135deg, #ec4899 0%, #a78bfa 50%, #fbbf24 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            letter-spacing: 4px;
+            box-shadow: 
+                0 10px 40px rgba(236, 72, 153, 0.5),
+                0 0 60px rgba(167, 139, 250, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
+            animation: returnBtnGlow 4s ease-in-out infinite;
+        }
+        @keyframes returnBtnGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .celebration-return-btn.show {
+            display: block;
+            transform: translateX(-50%) scale(1);
+        }
+        .celebration-return-btn:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 
+                0 15px 50px rgba(236, 72, 153, 0.6),
+                0 0 80px rgba(167, 139, 250, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        /* 蛋糕界面：返回按钮（左上角，小） */
+        .back-btn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 150;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #6b46c1;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(107, 70, 193, 0.3);
+            border-radius: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            display: none;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.2);
+        }
+        .back-btn.show {
+            display: block;
+        }
+
+        /* 蛋糕界面：跳过按钮（右上角） */
+        .skip-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 150;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #fff;
+            background: rgba(107, 70, 193, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            display: none;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            transition: all 0.3s ease;
+        }
+        .skip-btn:hover {
+            background: rgba(107, 70, 193, 0.9);
+            box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+        }
+        .skip-btn.show {
+            display: block;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s ease;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+        }
+
+        .container.hide {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.92) translateY(-30px);
+            filter: blur(8px);
+        }
+
+        .container.entering {
+            animation: containerEnter 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes containerEnter {
+            0% { 
+                opacity: 0;
+                transform: scale(0.92) translateY(30px);
+                filter: blur(8px);
+            }
+            100% { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        #stage {
+            transition: opacity 1s ease;
+        }
+        #stage.fade-in {
+            animation: stageFadeIn 1.2s ease;
+        }
+        @keyframes stageFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .title {
+            color: #6b46c1;
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 50px;
+            letter-spacing: 8px;
+            opacity: 0.9;
+            text-shadow: 0 2px 20px rgba(139, 92, 246, 0.2);
+            position: relative;
+        }
+
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+            border-radius: 1px;
+        }
+
+        .start-btn {
+            position: relative;
+            padding: 20px 80px;
+            font-size: 20px;
+            font-weight: 500;
+            color: #fff;
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            letter-spacing: 8px;
+            box-shadow: 
+                0 10px 40px rgba(139, 92, 246, 0.4),
+                0 0 80px rgba(236, 72, 153, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            animation: btnGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes btnGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                box-shadow: 
+                    0 10px 40px rgba(139, 92, 246, 0.4),
+                    0 0 80px rgba(236, 72, 153, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+            50% { 
+                background-position: 100% 50%;
+                box-shadow: 
+                    0 10px 50px rgba(236, 72, 153, 0.45),
+                    0 0 100px rgba(139, 92, 246, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .start-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 
+                0 15px 50px rgba(139, 92, 246, 0.5),
+                0 0 120px rgba(236, 72, 153, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        /* 副按钮（设置 / 开发者） */
+        .btn-row {
+            display: flex;
+            gap: 18px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .sub-btn {
+            padding: 12px 32px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #6b46c1;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(139, 92, 246, 0.4);
+            border-radius: 40px;
+            cursor: pointer;
+            letter-spacing: 3px;
+            backdrop-filter: blur(6px);
+            transition: all 0.25s ease;
+        }
+
+        .sub-btn:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #8b5cf6;
+            color: #5b21b6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(139, 92, 246, 0.2);
+        }
+
+        .sub-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 弹窗 */
+        .modal-mask {
+            position: fixed;
+            inset: 0;
+            background: rgba(76, 29, 149, 0.25);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-mask.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            width: min(420px, 86vw);
+            background: linear-gradient(160deg, #ffffff 0%, #faf5ff 100%);
+            border-radius: 22px;
+            padding: 32px 30px 26px;
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-mask.show .modal {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            color: #6b46c1;
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0 0 18px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .modal-body {
+            color: #4c1d95;
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        .modal-body .dev-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #5b21b6;
+        }
+
+        .modal-body .dev-meta {
+            color: #7c3aed;
+            opacity: 0.85;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .modal-close {
+            display: block;
+            margin: 22px auto 0;
+            padding: 10px 36px;
+            font-size: 15px;
+            color: #fff;
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            letter-spacing: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .modal-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(139, 92, 246, 0.35);
+        }
+
+        /* 设置项 */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 4px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.12);
+        }
+
+        .setting-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .setting-item label {
+            color: #4c1d95;
+            font-size: 15px;
+        }
+
+        .setting-item select {
+            padding: 6px 12px;
+            border: 1.5px solid rgba(139, 92, 246, 0.4);
+            border-radius: 10px;
+            background: #fff;
+            color: #6b46c1;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .setting-item select:focus {
+            border-color: #8b5cf6;
+        }
+
+        /* 蛋糕下方反馈按钮 */
+        .feedback-area {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 4vh;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .feedback-area.show {
+            display: flex;
+            animation: fbFadeIn 0.6s ease forwards;
+        }
+        @keyframes fbFadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .feedback-top {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 18px;
+            pointer-events: auto;
+        }
+        .feedback-bottom {
+            pointer-events: auto;
+        }
+        .fb-btn {
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-weight: 600;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .fb-btn:active {
+            transform: scale(0.94);
+        }
+        /* 大按钮：不满意、不喜欢 —— 醒目 */
+        .fb-large {
+            padding: 14px 38px;
+            font-size: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        }
+        .fb-dislike {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            color: #fff;
+        }
+        .fb-unsatisfied {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: #fff;
+        }
+        /* 小按钮：喜欢 —— 纯文字，极小 */
+        .fb-small {
+            padding: 0;
+            font-size: 4px;
+            background: transparent;
+            color: #7c3aed;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            font-weight: 400;
+            transform: scale(0.6);
+            transform-origin: center;
+            opacity: 0.7;
+        }
+
+        /* 二次确认遮罩 */
+        .confirm-mask {
+            position: fixed;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: url('微信图片2.jpg') center/cover no-repeat;
+        }
+        .confirm-mask::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.55);
+            z-index: 0;
+        }
+        .confirm-mask > * {
+            position: relative;
+            z-index: 1;
+        }
+        .confirm-mask.show {
+            display: flex;
+            opacity: 1;
+        }
+        .confirm-title {
+            color: #6b46c1;
+            font-size: 42px;
+            font-weight: 600;
+            letter-spacing: 8px;
+            margin-bottom: 60px;
+            text-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            animation: confirmPulse 2s ease-in-out infinite;
+        }
+        @keyframes confirmPulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.04); }
+        }
+        .confirm-btns {
+            display: flex;
+            gap: 30px;
+        }
+        .confirm-btn {
+            padding: 16px 40px;
+            font-size: 17px;
+            font-weight: 500;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        .confirm-btn.danger {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+        }
+        .confirm-btn.danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(239, 68, 68, 0.45);
+        }
+        .confirm-btn.return {
+            background: rgba(255, 255, 255, 0.8);
+            color: #7c3aed;
+            border: 1.5px solid rgba(124, 58, 237, 0.4);
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.2);
+        }
+        .confirm-btn.return:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        /* 伤心弹窗模式 */
+        .sad-mask {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: none;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            overflow: hidden;
+        }
+        .sad-mask.show {
+            display: block;
+            opacity: 1;
+        }
+        .sad-popup {
+            position: absolute;
+            min-width: 480px;
+            padding: 66px 54px 48px;
+            background: linear-gradient(160deg, #ffffff 0%, #fce7f3 100%);
+            border-radius: 36px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+            color: #be123c;
+            font-size: 48px;
+            font-weight: 600;
+            text-align: center;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            animation: sadPop 0.3s ease;
+        }
+        @keyframes sadPop {
+            from { transform: scale(0.6); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        .sad-close {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            width: 15px;
+            height: 15px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-size: 15px;
+            line-height: 15px;
+            color: #be123c;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sad-close::before {
+            content: "✕";
+        }
+        .sad-progress {
+            position: fixed;
+            top: 50%;
+            right: 24px;
+            transform: translateY(-50%);
+            height: min(60vh, 420px);
+            width: 60px;
+            z-index: 350;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .sad-progress.show {
+            display: flex;
+        }
+        .sad-progress-label {
+            color: #fda4af;
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
+        .sad-progress-track {
+            flex: 1;
+            width: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .sad-progress-fill {
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(0deg, #f472b6, #ef4444);
+            border-radius: 10px;
+            transition: height 0.25s ease;
+        }
+        .sad-final {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 400;
+            background: #000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+        .sad-final.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .sad-final-title {
+            color: #fff;
+            font-size: 44px;
+            font-weight: 700;
+            letter-spacing: 10px;
+            margin-bottom: 50px;
+            text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+            animation: sadGlow 1.6s ease-in-out infinite, fadeInUp 0.8s ease 0.3s both;
+        }
+        .sad-final-btn-row {
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        @keyframes sadGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+            50%      { text-shadow: 0 0 40px rgba(239, 68, 68, 0.9); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        /* 特殊弹窗（固定在最底层，第24个生成） */
+        .sad-special {
+            position: absolute;
+            min-width: 480px;
+            padding: 66px 54px 48px;
+            background: linear-gradient(160deg, #ffffff 0%, #fce7f3 100%);
+            border-radius: 36px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+            color: #be123c;
+            font-size: 48px;
+            font-weight: 600;
+            text-align: center;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            z-index: 1;                 /* 固定最底层 */
+            display: none;
+            pointer-events: none;       /* 默认不可点击 */
+            animation: sadPop 0.3s ease;
+        }
+        .sad-special.show {
+            display: block;
+        }
+        .sad-special.closable {
+            pointer-events: auto;       /* 所有普通弹窗关闭后可点击 */
+        }
+        .sad-special .tiny-you {
+            font-size: 2px;
+            vertical-align: middle;
+        }
+
+        /* 违规警告页面 */
+        .warning-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            transition: transform 0.8s cubic-bezier(0.6, 0.05, 0.3, 1);
+        }
+
+        .warning-page.slide-down {
+            transform: translateY(100%);
+        }
+
+        .warning-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .warning-icon-circle {
+            width: 100%;
+            height: 100%;
+            border: 8px solid #ff9800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .warning-icon-exclamation {
+            font-size: 72px;
+            font-weight: bold;
+            color: #ff9800;
+            line-height: 1;
+        }
+
+        .warning-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 16px;
+        }
+
+        .warning-subtitle {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .warning-reason {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 40px;
+            text-align: center;
+            line-height: 1.8;
+            max-width: 500px;
+        }
+
+        .warning-confirm-btn {
+            padding: 14px 48px;
+            font-size: 16px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .warning-confirm-btn:hover {
+            background: #1565c0;
+        }
+
+        .warning-reject-btn {
+            margin-top: 16px;
+            padding: 14px 48px;
+            font-size: 16px;
+            background: transparent;
+            color: #666;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .warning-reject-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .warning-footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .reject-toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            z-index: 100000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .reject-toast.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* 彩蛋页面 */
+        .easter-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('微信图片_20260720152701_211_73.jpg') center/cover no-repeat;
+            z-index: 100001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        .easter-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .easter-page.show {
+            display: flex;
+            animation: easterFadeIn 0.6s ease;
+        }
+
+        @keyframes easterFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .easter-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+                radial-gradient(1px 1px at 230px 80px, #fff, transparent),
+                radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 370px 50px, #fff, transparent),
+                radial-gradient(2px 2px at 450px 180px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 520px 90px, #fff, transparent),
+                radial-gradient(2px 2px at 600px 140px, rgba(255,255,255,0.9), transparent);
+            background-size: 650px 200px;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+
+        .easter-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 500px;
+            padding: 40px;
+        }
+
+        .easter-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            background-size: 300% 300%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .easter-subtitle {
+            font-size: 16px;
+            color: #a0a0c0;
+            margin-bottom: 30px;
+        }
+
+        .easter-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .easter-avatar {
+            font-size: 64px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .easter-info {
+            text-align: left;
+            flex: 1;
+        }
+
+        .easter-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .easter-role {
+            font-size: 13px;
+            color: #b0b0d0;
+            margin-bottom: 10px;
+        }
+
+        .easter-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .easter-tags span {
+            font-size: 11px;
+            padding: 3px 8px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            color: #c0c8ff;
+        }
+
+        .easter-quote {
+            font-size: 15px;
+            color: #d0d0e8;
+            font-style: italic;
+            margin-bottom: 28px;
+            line-height: 1.8;
+        }
+
+        .easter-secrets {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .easter-secret-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #feca57;
+        }
+
+        .easter-secret-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .secret-item {
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .secret-item.unlocked {
+            background: rgba(46, 213, 115, 0.25);
+            color: #7bed9f;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(46, 213, 115, 0.6);
+        }
+
+        .secret-item.locked {
+            background: rgba(255, 255, 255, 0.03);
+            color: #666;
+        }
+
+        .easter-close-btn {
+            padding: 12px 40px;
+            font-size: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            bottom: 30px;
+        }
+
+        .easter-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 全局页面转场遮罩 */
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #d8b4fe 0%, #c4b5fd 50%, #e9d5ff 100%);
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .page-transition.cover {
+            opacity: 1;
+            transition: opacity 0s;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb-3"></div>
+    <div class="page-transition" id="pageTransition"></div>
+    <div class="warning-page" id="warningPage">
+        <div class="warning-icon">
+            <div class="warning-icon-circle">
+                <span class="warning-icon-exclamation">!</span>
+            </div>
+        </div>
+        <div class="warning-title">此网站涉嫌违规</div>
+        <div class="warning-subtitle">您访问的网站内容可能存在违规信息</div>
+        <div class="warning-reason">
+            该网站因涉嫌违反相关法律法规和政策规定，<br>
+            已被安全防护系统检测并拦截。<br>
+            继续浏览可能会对您的设备造成安全风险。
+        </div>
+        <button class="warning-confirm-btn" id="warningConfirmBtn">无视风险，继续访问</button>
+        <button class="warning-reject-btn" id="warningRejectBtn">拒绝访问</button>
+        <div class="warning-footer">安全防护中心 · 安全提示</div>
+    </div>
+
+    <!-- 拒绝访问提示弹窗 -->
+    <div class="reject-toast" id="rejectToast">此网站拒绝你的拒绝访问</div>
+
+    <canvas id="stage"></canvas>
+
+    <!-- 蛋糕界面：返回按钮（左上角） -->
+    <button class="back-btn" id="backBtn">← 返回</button>
+    <!-- 蛋糕界面：跳过按钮（右上角，首次开始后显示） -->
+    <button class="skip-btn" id="skipBtn">跳过动画 ⏭</button>
+
+    <div class="container" id="welcome">
+        <h1 class="title">欢迎</h1>
+        <button class="start-btn" id="startBtn">开始</button>
+        <div class="btn-row">
+            <button class="sub-btn" id="settingsBtn">设置</button>
+            <button class="sub-btn" id="devBtn">查看开发者</button>
+        </div>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="modal-mask" id="settingsModal">
+        <div class="modal">
+            <h2 class="modal-title">设置</h2>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>气球数量</label>
+                    <select id="setBalloonCount">
+                        <option value="15">少</option>
+                        <option value="25" selected>中</option>
+                        <option value="40">多</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>文字停留时长</label>
+                    <select id="setHoldTime">
+                        <option value="short">较短</option>
+                        <option value="normal" selected>正常</option>
+                        <option value="long">较长</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>文字大小</label>
+                    <select id="setFontSize">
+                        <option value="0.11">小</option>
+                        <option value="0.125" selected>中</option>
+                        <option value="0.14">大</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>背景颜色</label>
+                    <select id="setBgColor">
+                        <option value="purple" selected>淡紫（温馨）</option>
+                        <option value="pink">淡粉（浪漫）</option>
+                        <option value="blue">淡蓝（清新）</option>
+                        <option value="green">淡绿（自然）</option>
+                        <option value="warm">暖黄（阳光）</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>蛋糕颜色</label>
+                    <select id="setCakeColor">
+                        <option value="purple" selected>紫色系</option>
+                        <option value="pink">粉色系</option>
+                        <option value="blue">蓝色系</option>
+                        <option value="green">绿色系</option>
+                        <option value="rainbow">彩虹色</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>画蛋糕速度</label>
+                    <select id="setCakeSpeed">
+                        <option value="1">慢</option>
+                        <option value="2" selected>正常</option>
+                        <option value="4">快</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>烟花时长</label>
+                    <select id="setFireworkDuration">
+                        <option value="10">10秒</option>
+                        <option value="15" selected>15秒</option>
+                        <option value="20">20秒</option>
+                        <option value="30">30秒</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>点击音量</label>
+                    <input type="range" id="setVolumeClick" min="0" max="100" value="50" style="width: 120px;">
+                </div>
+                <div class="setting-item">
+                    <label>蛋糕完成音量</label>
+                    <input type="range" id="setVolumeCake" min="0" max="100" value="50" style="width: 120px;">
+                </div>
+                <div class="setting-item">
+                    <label>弹窗音量</label>
+                    <input type="range" id="setVolumePopup" min="0" max="100" value="50" style="width: 120px;">
+                </div>
+                <div class="setting-item">
+                    <label>消除弹窗音量</label>
+                    <input type="range" id="setVolumeClose" min="0" max="100" value="50" style="width: 120px;">
+                </div>
+            </div>
+            <button class="modal-close" id="settingsClose">关闭</button>
+        </div>
+    </div>
+
+    <!-- 开发者信息弹窗 -->
+    <div class="modal-mask" id="devModal">
+        <div class="modal">
+            <h2 class="modal-title">开发者</h2>
+            <div class="modal-body" style="text-align:center;">
+                <div class="dev-name" id="devName" style="cursor:pointer; user-select:none;">谢智扬</div>
+                <div class="dev-meta">前端 / 视觉 / 粒子动画</div>
+                <div class="dev-meta" style="margin-top:14px;">小彭生日特别版</div>
+                <div class="dev-meta">这是一份专属的生日礼物</div>
+                <div class="dev-meta">愿每个心愿都能实现</div>
+            </div>
+            <button class="modal-close" id="devClose">关闭</button>
+        </div>
+    </div>
+
+    <!-- 彩蛋页面 -->
+    <div class="easter-page" id="easterPage">
+        <div class="easter-stars"></div>
+        <div class="easter-content">
+            <div class="easter-title">🎉 恭喜你发现了彩蛋！🎉</div>
+            <div class="easter-subtitle">你已解锁开发者模式</div>
+            <div class="easter-card">
+                <div class="easter-avatar">🦊</div>
+                <div class="easter-info">
+                    <div class="easter-name">谢智扬</div>
+                    <div class="easter-role">神秘开发者 / 代码魔法师</div>
+                    <div class="easter-tags">
+                        <span>✨ 前端</span>
+                        <span>🎨 设计</span>
+                        <span>🎵 音乐</span>
+                        <span>🎮 游戏</span>
+                    </div>
+                </div>
+            </div>
+            <div class="easter-quote">"代码是诗，动画是梦，<br>愿每一行代码都能温暖人心。"</div>
+            <div class="easter-secrets">
+                <div class="easter-secret-title">🔮 隐藏成就</div>
+                <div class="easter-secret-list">
+                    <div class="secret-item unlocked">🏆 火眼金睛 - 发现三连击彩蛋</div>
+                    <div class="secret-item locked">🎂 生日达人 - 看完一次画蛋糕</div>
+                    <div class="secret-item locked">💔 心碎收集者 - 消除所有弹窗</div>
+                    <div class="secret-item locked">🦾 犟种 - 累计消除250个弹窗</div>
+                    <div class="secret-item locked">💎 坚定选择 - 首次即选择喜欢</div>
+                </div>
+            </div>
+            <button class="easter-close-btn" id="easterCloseBtn">关闭彩蛋</button>
+        </div>
+    </div>
+
+    <!-- 蛋糕下方的反馈按钮（装饰出现后显示） -->
+    <div class="feedback-area" id="feedbackArea">
+        <div class="feedback-top">
+            <button class="fb-btn fb-large fb-dislike" id="btnDislike">不喜欢</button>
+            <button class="fb-btn fb-large fb-unsatisfied" id="btnUnsatisfied">不满意</button>
+        </div>
+        <div class="feedback-bottom">
+            <button class="fb-btn fb-small fb-like" id="btnLike">喜欢</button>
+        </div>
+    </div>
+
+    <!-- 黑色庆典页面（成就+视频烟花） -->
+    <div class="celebration-page" id="celebrationPage">
+        <canvas id="celebrationCanvas"></canvas>
+        <video id="celebrationVideo" muted playsinline preload="auto"></video>
+    </div>
+
+    <!-- 二次确认遮罩 -->
+    <div class="confirm-mask" id="confirmMask">
+        <div class="confirm-title">你想清楚再选</div>
+        <div class="confirm-btns">
+            <button class="confirm-btn danger" id="btnConfirmDanger">无视风险继续选择</button>
+            <button class="confirm-btn return" id="btnConfirmReturn">返回重新选择</button>
+        </div>
+    </div>
+
+    <!-- 伤心弹窗模式 -->
+    <div class="sad-mask" id="sadMask">
+        <!-- 特殊弹窗（最下方，隐藏在所有弹窗之后） -->
+        <div class="sad-special" id="sadSpecial">
+            <span>你不喜欢，但我喜欢<span class="tiny-you">你</span></span>
+            <button class="sad-close" id="sadSpecialClose" type="button"></button>
+        </div>
+    </div>
+
+    <!-- 伤心模式进度条 -->
+    <div class="sad-progress" id="sadProgress">
+        <div class="sad-progress-label" id="sadProgressLabel">消除进度 0 / 50</div>
+        <div class="sad-progress-track">
+            <div class="sad-progress-fill" id="sadProgressFill"></div>
+        </div>
+    </div>
+
+    <!-- 命令重新选择（删除50个后） -->
+    <div class="sad-final" id="sadFinal">
+        <div class="sad-final-title">命令你重新选择</div>
+        <div class="confirm-btns sad-final-btn-row">
+            <button class="confirm-btn danger" id="btnSadContinue">继续选择</button>
+            <button class="confirm-btn return" id="btnSadReturn">返回重新选择</button>
+        </div>
+    </div>
+
+    <script>
+        const warningPage = document.getElementById('warningPage');
+        const warningConfirmBtn = document.getElementById('warningConfirmBtn');
+        const warningRejectBtn = document.getElementById('warningRejectBtn');
+        const rejectToast = document.getElementById('rejectToast');
+        const devName = document.getElementById('devName');
+        const easterPage = document.getElementById('easterPage');
+        const easterCloseBtn = document.getElementById('easterCloseBtn');
+
+        let toastTimer = null;
+        let devClickCount = 0;
+        let devClickTimer = null;
+
+        /* ============== 全局页面转场 ============== */
+        const pageTransitionEl = document.getElementById('pageTransition');
+        let ptTimer = null;
+        function triggerPageTransition() {
+            if (ptTimer) clearTimeout(ptTimer);
+            // 瞬间遮罩（无过渡），让页面切换在遮罩下发生
+            pageTransitionEl.classList.add('cover');
+            // 短暂停顿后淡出，露出新页面
+            ptTimer = setTimeout(() => {
+                pageTransitionEl.classList.remove('cover');
+            }, 60);
+        }
+        // 触发转场的按钮白名单（这些按钮会导致页面/界面切换）
+        const pageSwitchButtonIds = new Set([
+            'warningConfirmBtn', 'startBtn', 'backBtn', 'skipBtn',
+            'settingsBtn', 'devBtn', 'settingsClose', 'devClose',
+            'easterCloseBtn', 'btnLike', 'btnDislike', 'btnUnsatisfied',
+            'btnConfirmDanger', 'btnConfirmReturn', 'sadSpecialClose',
+            'btnSadContinue', 'btnSadReturn', 'celebrationReturnBtn'
+        ]);
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (btn && pageSwitchButtonIds.has(btn.id)) {
+                triggerPageTransition();
+            }
+        }, true);
+
+        warningConfirmBtn.addEventListener('click', () => {
+            warningPage.classList.add('slide-down');
+            setTimeout(() => {
+                warningPage.style.display = 'none';
+            }, 800);
+        });
+
+        warningRejectBtn.addEventListener('click', () => {
+            if (toastTimer) clearTimeout(toastTimer);
+            rejectToast.classList.add('show');
+            toastTimer = setTimeout(() => {
+                rejectToast.classList.remove('show');
+            }, 2000);
+        });
+
+        devName.addEventListener('click', () => {
+            devClickCount++;
+            if (devClickTimer) clearTimeout(devClickTimer);
+            devClickTimer = setTimeout(() => {
+                devClickCount = 0;
+            }, 1000);
+            if (devClickCount >= 3) {
+                devClickCount = 0;
+                easterPage.classList.add('show');
+            }
+        });
+
+        easterCloseBtn.addEventListener('click', () => {
+            easterPage.classList.remove('show');
+        });
+
+        const canvas = document.getElementById('stage');
+        const ctx = canvas.getContext('2d');
+        const welcome = document.getElementById('welcome');
+        const startBtn = document.getElementById('startBtn');
+        const backBtn = document.getElementById('backBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        let hasStartedOnce = false;  // 是否已经点击过开始（用于跳过按钮显示）
+
+        let W = 0, H = 0, dpr = window.devicePixelRatio || 1;
+
+        function resize() {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        /* ============== 音频管理器 ============== */
+        class AudioManager {
+            constructor() {
+                this.ctx = null;
+                this.volumes = {
+                    click: 0.5,
+                    cake: 0.5,
+                    popup: 0.5,
+                    close: 0.5
+                };
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            getVol(key) {
+                return (this.volumes[key] !== undefined ? this.volumes[key] : 0.5);
+            }
+
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                const v = this.getVol('click');
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(v * 0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.start(this.ctx.currentTime);
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+
+            playClose() {
+                if (!this.enabled) return;
+                this.init();
+                const v = this.getVol('close');
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(350, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(v * 0.2, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+                osc.start(this.ctx.currentTime);
+                osc.stop(this.ctx.currentTime + 0.1);
+            }
+
+            playCakeDone() {
+                if (!this.enabled) return;
+                this.init();
+                const v = this.getVol('cake');
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.12);
+                    gain.gain.setValueAtTime(0, this.ctx.currentTime + i * 0.12);
+                    gain.gain.linearRampToValueAtTime(v * 0.2, this.ctx.currentTime + i * 0.12 + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + i * 0.12 + 0.3);
+                    osc.start(this.ctx.currentTime + i * 0.12);
+                    osc.stop(this.ctx.currentTime + i * 0.12 + 0.3);
+                });
+            }
+
+            playPopup() {
+                if (!this.enabled) return;
+                this.init();
+                const v = this.getVol('popup');
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(300, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(v * 0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+                osc.start(this.ctx.currentTime);
+                osc.stop(this.ctx.currentTime + 0.12);
+            }
+
+            setVolume(key, val) {
+                if (this.volumes[key] !== undefined) {
+                    this.volumes[key] = Math.max(0, Math.min(1, val));
+                }
+            }
+
+            setEnabled(val) {
+                this.enabled = val;
+            }
+        }
+
+        const audio = new AudioManager();
+        const balloonColors = [
+            '#f472b6', '#fb7185', '#fbbf24', '#facc15',
+            '#34d399', '#22d3ee', '#60a5fa', '#a78bfa',
+            '#c084fc', '#f9a8d4', '#fda4af'
+        ];
+
+        const balloons = [];
+        let balloonSpawnTimer = 0;
+        let balloonsActive = false;
+        // 气球最大数量上限（可在设置中调整）
+        let maxBalloons = 25;
+        // 新气球生成间隔（毫秒），越大越稀疏
+        const SPAWN_INTERVAL = 450;
+
+        // 按列均匀生成气球，避免扎堆
+        let balloonColumn = 0;
+        const BALLOON_COLUMNS = 12;
+
+        function createBalloon(fromTop) {
+            const radius = 18 + Math.random() * 14;
+            // 按列分配 x 坐标 + 少量随机偏移，保证均匀分布
+            const colWidth = W / BALLOON_COLUMNS;
+            const colX = colWidth * (balloonColumn % BALLOON_COLUMNS) + colWidth / 2;
+            balloonColumn++;
+            const jitterX = (Math.random() - 0.5) * colWidth * 0.6;
+            const x = colX + jitterX;
+
+            return {
+                x: x,
+                baseX: x,
+                y: fromTop ? -radius - Math.random() * H * 0.3 : Math.random() * -H,
+                r: radius,
+                color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
+                // 下落速度差异收窄，更均匀
+                vy: 0.9 + Math.random() * 0.7,
+                // 横向摆动收窄，避免出列
+                swayAmp: 8 + Math.random() * 12,
+                swaySpeed: 0.3 + Math.random() * 0.6,
+                swayPhase: Math.random() * Math.PI * 2,
+                rotation: (Math.random() - 0.5) * 0.2
+            };
+        }
+
+        function updateBalloons(dt) {
+            if (balloonsActive && balloons.length < maxBalloons) {
+                balloonSpawnTimer += dt;
+                // 按设定的间隔生成新气球
+                while (balloonSpawnTimer >= SPAWN_INTERVAL && balloons.length < maxBalloons) {
+                    balloonSpawnTimer -= SPAWN_INTERVAL;
+                    balloons.push(createBalloon(true));
+                }
+            }
+
+            for (let i = balloons.length - 1; i >= 0; i--) {
+                const b = balloons[i];
+                b.y += b.vy;
+                b.swayPhase += b.swaySpeed * 0.02;
+                b.x = b.baseX + Math.sin(b.swayPhase) * b.swayAmp;
+
+                // 飘出屏幕底部则移除
+                if (b.y - b.r > H + 50) {
+                    balloons.splice(i, 1);
+                }
+            }
+        }
+
+        function drawBalloon(b) {
+            ctx.save();
+            ctx.translate(b.x, b.y);
+            ctx.rotate(Math.sin(b.swayPhase) * 0.05);
+
+            // 气球本体
+            ctx.beginPath();
+            ctx.ellipse(0, 0, b.r * 0.85, b.r, 0, 0, Math.PI * 2);
+            ctx.fillStyle = b.color;
+            ctx.fill();
+
+            // 高光
+            ctx.beginPath();
+            ctx.ellipse(-b.r * 0.3, -b.r * 0.35, b.r * 0.18, b.r * 0.28, -0.4, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.45)';
+            ctx.fill();
+
+            // 气球结
+            ctx.beginPath();
+            ctx.moveTo(-3, b.r);
+            ctx.lineTo(3, b.r);
+            ctx.lineTo(0, b.r + 6);
+            ctx.closePath();
+            ctx.fillStyle = b.color;
+            ctx.fill();
+
+            // 气球线
+            ctx.beginPath();
+            ctx.moveTo(0, b.r + 6);
+            ctx.bezierCurveTo(
+                -8 + Math.sin(b.swayPhase) * 4, b.r + 30,
+                8 + Math.sin(b.swayPhase + 1) * 4, b.r + 60,
+                Math.sin(b.swayPhase * 0.5) * 6, b.r + 90
+            );
+            ctx.strokeStyle = 'rgba(120, 90, 150, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        /* ============== 粒子文字 ============== */
+        let particles = [];
+        let textActive = false;
+        let textFading = false;
+        let textGlobalAlpha = 1;
+        let textDispersing = false;  // 粒子散开消失模式
+        // 文字序列：依次显示，停留 holdTime 毫秒后重组为下一段
+        // holdScale 用于根据设置动态缩放停留时长
+        let holdScale = 1;
+        // 字号比例（可在设置中调整）
+        let fontScaleSetting = 0.125;
+        const textSequence = [
+            { text: '祝小彭生日快乐', holdTime: 4000 },
+            { text: '准备好了吗', holdTime: 3500 },
+            { text: '3', holdTime: 2500 },
+            { text: '2', holdTime: 2500 },
+            { text: '1', holdTime: 2500 },
+            { text: '开始！', holdTime: 999999, offsetX: 40 }  // "开始!"整体右移40px
+        ];
+        let phaseIndex = 0;
+        let phaseStartTime = 0;
+        // 粒子目标颜色（柔和暖色 + 紫）
+        const particleColors = [
+            '#ec4899', '#f472b6', '#a78bfa', '#8b5cf6',
+            '#fb7185', '#f9a8d4', '#c084fc'
+        ];
+
+        // 采集某段文字的所有目标点
+        function sampleTextPoints(text, fontSizeScale, offsetXExtra) {
+            const off = document.createElement('canvas');
+            const octx = off.getContext('2d');
+
+            const baseFontSize = Math.min(W * fontScaleSetting, fontScaleSetting * 1280);
+            const fontSize = baseFontSize * (fontSizeScale || 1);
+            const font = `bold ${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+
+            octx.font = font;
+            const metrics = octx.measureText(text);
+            const textWidth = Math.ceil(metrics.width) + 40;
+            const textHeight = Math.ceil(fontSize * 1.4);
+
+            off.width = textWidth;
+            off.height = textHeight;
+            octx.font = font;
+            octx.fillStyle = '#000';
+            octx.textBaseline = 'middle';
+            octx.textAlign = 'center';
+            // 垂直微调：textBaseline='middle' 会让文字略偏上，下移一点让视觉居中
+            const vAdjust = fontSize * 0.08;
+            octx.fillText(text, off.width / 2, off.height / 2 + vAdjust);
+
+            const data = octx.getImageData(0, 0, off.width, off.height).data;
+            const gap = 4;
+            const offsetX = (W - off.width) / 2 + (offsetXExtra || 0);  // 应用额外水平偏移
+            const offsetY = (H - off.height) / 2;
+
+            const points = [];
+            for (let y = 0; y < off.height; y += gap) {
+                for (let x = 0; x < off.width; x += gap) {
+                    const idx = (y * off.width + x) * 4 + 3;
+                    if (data[idx] > 128) {
+                        points.push({ x: offsetX + x, y: offsetY + y });
+                    }
+                }
+            }
+            return points;
+        }
+
+        // Fisher-Yates 洗牌
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function buildTextParticles() {
+            // 为每段文字采样目标点
+            const allPoints = textSequence.map((item, i) => {
+                // 倒计时数字和"开始"用更大字号
+                const scale = i >= 2 ? 1.6 : 1;
+                return sampleTextPoints(item.text, scale, item.offsetX || 0);
+            });
+
+            // 以所有阶段中最多的点数为粒子总数
+            const count = allPoints.reduce((max, pts) => Math.max(max, pts.length), 0);
+
+            // 每个阶段的点都洗牌，粒子会乱序分配，视觉上更自然
+            const shuffledPoints = allPoints.map(pts => shuffle(pts.slice()));
+
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                // 每个粒子在每段文字都有对应的目标点
+                const targets = shuffledPoints.map(pts => pts[i % pts.length]);
+
+                const startDist = 300 + Math.random() * 400;
+                const angle = Math.random() * Math.PI * 2;
+
+                particles.push({
+                    targets: targets,
+                    tx: targets[0].x,
+                    ty: targets[0].y,
+                    x: (W / 2) + Math.cos(angle) * startDist,
+                    y: (H / 2) + Math.sin(angle) * startDist,
+                    vx: 0,
+                    vy: 0,
+                    color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                    size: 1.5 + Math.random() * 1.5,
+                    delay: Math.random() * 1200,
+                    reshuffleDelay: Math.random() * 800,
+                    ease: 0.015 + Math.random() * 0.015,
+                    born: false,
+                    alpha: 0,
+                    floatPhase: Math.random() * Math.PI * 2,
+                    arrived: false,
+                    waiting: false
+                });
+            }
+        }
+
+        function switchToPhase(idx) {
+            phaseIndex = idx;
+            phaseStartTime = performance.now();
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                const t = p.targets[idx];
+                p.tx = t.x;
+                p.ty = t.y;
+                p.arrived = false;
+                p.waiting = true;
+            }
+        }
+
+        function updateParticles(now) {
+            const phaseElapsed = now - phaseStartTime;
+
+            // 如果不是最后一段，且停留时间到了，切换到下一段
+            const cur = textSequence[phaseIndex];
+            if (phaseIndex < textSequence.length - 1 && phaseElapsed >= cur.holdTime * holdScale) {
+                switchToPhase(phaseIndex + 1);
+            }
+
+            // 处于最后一段（"开始！"）时，停留3秒后开始散开消失
+            if (phaseIndex === textSequence.length - 1 && !textDispersing) {
+                // 散开触发时间 = "开始!"停留3秒（独立于 holdTime，确保字样先显示3秒）
+                if (phaseElapsed >= 3000) {
+                    textDispersing = true;
+                    // 给每个粒子赋予向外散开的随机方向，速度从0渐进加速（避免位置突变闪烁）
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        const ang = Math.random() * Math.PI * 2;
+                        p.dispAng = ang;
+                        p.dispSpd = 0.15 + Math.random() * 0.25; // 加速度
+                        p.dispCurSpd = 0;  // 当前速度从0开始
+                        p.vx = 0;
+                        p.vy = -0.5; // 略微向上初速
+                        p.dispAlpha = 1;
+                    }
+                }
+            }
+
+            // 粒子散开消失
+            if (textDispersing) {
+                let allGone = true;
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    // 速度渐进加速（避免瞬间跳变闪烁）
+                    p.dispCurSpd += p.dispSpd;
+                    p.vx = Math.cos(p.dispAng) * p.dispCurSpd;
+                    p.vy = Math.sin(p.dispAng) * p.dispCurSpd - 0.5;
+                    // 持续向外飞
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.02; // 轻微重力
+                    p.dispAlpha = Math.max(0, (p.dispAlpha || 1) - 0.01);
+                    if (p.dispAlpha > 0) allGone = false;
+                }
+                // 所有粒子消失后，开始画蛋糕（并停止气球）
+                if (allGone && !cakeDrawing && !cakeTriggered) {
+                    cakeTriggered = true;
+                    textActive = false;
+                    textDispersing = false;
+                    balloonsActive = false; // 停止生成新气球，现有气球保持原速继续下落
+                    setTimeout(() => startCakeDrawing(), 400);
+                }
+                return;
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+
+                // 第一阶段：首次入场延迟
+                if (phaseIndex === 0) {
+                    const elapsed = now - phaseStartTime;
+                    if (elapsed < p.delay) continue;
+                    p.born = true;
+                }
+
+                if (p.born) {
+                    p.alpha = Math.min(1, p.alpha + 0.02);
+                }
+
+                // 切换阶段时的随机延迟
+                if (p.waiting && phaseIndex > 0) {
+                    const elapsed = now - phaseStartTime;
+                    if (elapsed < p.reshuffleDelay) continue;
+                    p.waiting = false;
+                }
+
+                // 弹簧式缓动到当前目标
+                const dx = p.tx - p.x;
+                const dy = p.ty - p.y;
+                p.vx = (p.vx + dx * p.ease) * 0.85;
+                p.vy = (p.vy + dy * p.ease) * 0.85;
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (!p.arrived && Math.abs(dx) < 1.5 && Math.abs(dy) < 1.5) {
+                    p.arrived = true;
+                }
+
+                if (p.arrived) {
+                    p.floatPhase += 0.03;
+                }
+            }
+        }
+
+        function drawParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                if (!p.born) continue;
+                let px = p.x, py = p.y;
+                if (p.arrived && !textDispersing) {
+                    px += Math.sin(p.floatPhase) * 0.8;
+                    py += Math.cos(p.floatPhase * 1.3) * 0.8;
+                }
+                // 散开时用 dispAlpha，否则用 alpha
+                const a = textDispersing ? (p.dispAlpha || 0) : (p.alpha * textGlobalAlpha);
+                if (a <= 0) continue;
+                ctx.globalAlpha = a;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(px, py, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        /* ============== 庆典页面系统（黑色背景 + 大粒子字 + 爱心烟花） ============== */
+        let celebrationPage;
+        let celebrationCanvas;
+        let cctx;
+        let CW, CH;
+        let celebrationActive = false;
+        let celebrationAnimId = null;
+
+        let celebParticles = [];
+        let celebPhaseIndex = 0;
+        let celebPhaseStartTime = 0;
+        let celebDispersing = false;
+        let celebTextSequence = [];
+
+        let celebFireworkParticles = [];
+        let celebFireworkRockets = [];
+        let celebFireworkActive = false;
+        let celebFireworkStartTime = 0;
+        let celebFireworkFrozen = false;
+        let celebHeartForming = false;
+        let celebHeartParticles = [];
+        let celebHeartExplodeStartTime = 0;
+        // 全局心跳相位（爱心整体跳动）
+        let celebHeartBeatPhase = 0;
+        let celebHeartBeatScale = 1;
+        let celebHeartBeatCenterX = 0;
+        let celebHeartBeatCenterY = 0;
+        let celebFinalRocketLaunched = false;
+        let celebReturnBtn = null;
+
+        function initCelebrationPage() {
+            celebrationPage = document.getElementById('celebrationPage');
+            celebrationCanvas = document.getElementById('celebrationCanvas');
+            cctx = celebrationCanvas.getContext('2d');
+            resizeCelebrationCanvas();
+            window.addEventListener('resize', resizeCelebrationCanvas);
+
+            const btn = document.createElement('button');
+            btn.textContent = '返回';
+            btn.className = 'celebration-return-btn';
+            btn.id = 'celebrationReturnBtn';
+            btn.addEventListener('click', () => {
+                audio.playClick();
+                exitCelebration();
+            });
+            celebrationPage.appendChild(btn);
+            celebReturnBtn = btn;
+        }
+
+        function resizeCelebrationCanvas() {
+            CW = window.innerWidth;
+            CH = window.innerHeight;
+            const cdpr = window.devicePixelRatio || 1;
+            celebrationCanvas.width = CW * cdpr;
+            celebrationCanvas.height = CH * cdpr;
+            celebrationCanvas.style.width = CW + 'px';
+            celebrationCanvas.style.height = CH + 'px';
+            cctx.setTransform(cdpr, 0, 0, cdpr, 0, 0);
+        }
+
+        function sampleCelebrationTextPoints(lines, fontSizeScale, yOffset) {
+            // lines 可以是字符串或字符串数组（多行）
+            if (typeof lines === 'string') lines = [lines];
+            const baseFontSize = Math.min(CW * 0.125, 0.125 * 1280);
+            const fontSize = baseFontSize * (fontSizeScale || 1);
+            const font = `bold ${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+            const lineGap = fontSize * 1.1; // 行间距
+            const totalHeight = lineGap * lines.length;
+            const startY = (CH - totalHeight) / 2 + (yOffset || 0);
+            const gap = 4;
+            const points = [];
+
+            for (let li = 0; li < lines.length; li++) {
+                const text = lines[li];
+                const off = document.createElement('canvas');
+                const octx = off.getContext('2d');
+                octx.font = font;
+                const metrics = octx.measureText(text);
+                const textWidth = Math.ceil(metrics.width) + 40;
+                const textHeight = Math.ceil(fontSize * 1.4);
+                off.width = textWidth;
+                off.height = textHeight;
+                octx.font = font;
+                octx.fillStyle = '#000';
+                octx.textBaseline = 'middle';
+                octx.textAlign = 'center';
+                const vAdjust = fontSize * 0.08;
+                octx.fillText(text, off.width / 2, off.height / 2 + vAdjust);
+                const data = octx.getImageData(0, 0, off.width, off.height).data;
+                const offsetX = (CW - off.width) / 2;
+                const offsetY = startY + li * lineGap;
+                for (let y = 0; y < off.height; y += gap) {
+                    for (let x = 0; x < off.width; x += gap) {
+                        const idx = (y * off.width + x) * 4 + 3;
+                        if (data[idx] > 128) {
+                            points.push({ x: offsetX + x, y: offsetY + y });
+                        }
+                    }
+                }
+            }
+            return points;
+        }
+
+        function buildCelebrationParticles() {
+            const allPoints = celebTextSequence.map(item => {
+                return sampleCelebrationTextPoints(item.text, item.scale || 1, item.yOffset || 0);
+            });
+            const count = allPoints.reduce((max, pts) => Math.max(max, pts.length), 0);
+            const shuffledPoints = allPoints.map(pts => {
+                const arr = pts.slice();
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            });
+            celebParticles = [];
+            const colors = [
+                '#ec4899', '#f472b6', '#a78bfa', '#8b5cf6',
+                '#fb7185', '#f9a8d4', '#c084fc'
+            ];
+            for (let i = 0; i < count; i++) {
+                const targets = shuffledPoints.map(pts => pts[i % pts.length]);
+                const startDist = 300 + Math.random() * 400;
+                const angle = Math.random() * Math.PI * 2;
+                celebParticles.push({
+                    targets: targets,
+                    tx: targets[0].x,
+                    ty: targets[0].y,
+                    x: (CW / 2) + Math.cos(angle) * startDist,
+                    y: (CH / 2) + Math.sin(angle) * startDist,
+                    vx: 0,
+                    vy: 0,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: 1.5 + Math.random() * 1.5,
+                    delay: Math.random() * 1200,
+                    reshuffleDelay: Math.random() * 800,
+                    ease: 0.015 + Math.random() * 0.015,
+                    born: false,
+                    alpha: 0,
+                    floatPhase: Math.random() * Math.PI * 2,
+                    arrived: false,
+                    waiting: false
+                });
+            }
+        }
+
+        function switchCelebrationPhase(idx) {
+            celebPhaseIndex = idx;
+            celebPhaseStartTime = performance.now();
+            for (let i = 0; i < celebParticles.length; i++) {
+                const p = celebParticles[i];
+                const t = p.targets[idx];
+                p.tx = t.x;
+                p.ty = t.y;
+                p.arrived = false;
+                p.waiting = true;
+            }
+        }
+
+        function updateCelebrationParticles(now) {
+            const phaseElapsed = now - celebPhaseStartTime;
+            const cur = celebTextSequence[celebPhaseIndex];
+
+            if (celebDispersing) {
+                let allGone = true;
+                for (let i = 0; i < celebParticles.length; i++) {
+                    const p = celebParticles[i];
+                    p.dispCurSpd += p.dispSpd;
+                    p.vx = Math.cos(p.dispAng) * p.dispCurSpd;
+                    p.vy = Math.sin(p.dispAng) * p.dispCurSpd - 0.5;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.02;
+                    p.dispAlpha = Math.max(0, (p.dispAlpha || 1) - 0.01);
+                    if (p.dispAlpha > 0) allGone = false;
+                }
+                if (allGone) {
+                    celebParticles = [];
+                    startCelebrationFirework();
+                }
+                return;
+            }
+
+            if (celebPhaseIndex < celebTextSequence.length - 1 && phaseElapsed >= cur.holdTime * holdScale) {
+                switchCelebrationPhase(celebPhaseIndex + 1);
+            }
+
+            if (celebPhaseIndex === celebTextSequence.length - 1 && phaseElapsed >= cur.holdTime * holdScale) {
+                celebDispersing = true;
+                for (let i = 0; i < celebParticles.length; i++) {
+                    const p = celebParticles[i];
+                    const ang = Math.random() * Math.PI * 2;
+                    p.dispAng = ang;
+                    p.dispSpd = 0.15 + Math.random() * 0.25;
+                    p.dispCurSpd = 0;
+                    p.vx = 0;
+                    p.vy = -0.5;
+                    p.dispAlpha = 1;
+                }
+            }
+
+            for (let i = 0; i < celebParticles.length; i++) {
+                const p = celebParticles[i];
+                if (celebPhaseIndex === 0) {
+                    const elapsed = now - celebPhaseStartTime;
+                    if (elapsed < p.delay) continue;
+                    p.born = true;
+                }
+                if (p.born) {
+                    p.alpha = Math.min(1, p.alpha + 0.02);
+                }
+                if (p.waiting && celebPhaseIndex > 0) {
+                    const elapsed = now - celebPhaseStartTime;
+                    if (elapsed < p.reshuffleDelay) continue;
+                    p.waiting = false;
+                }
+                const dx = p.tx - p.x;
+                const dy = p.ty - p.y;
+                p.vx = (p.vx + dx * p.ease) * 0.85;
+                p.vy = (p.vy + dy * p.ease) * 0.85;
+                p.x += p.vx;
+                p.y += p.vy;
+                if (!p.arrived && Math.abs(dx) < 1.5 && Math.abs(dy) < 1.5) {
+                    p.arrived = true;
+                }
+                if (p.arrived) {
+                    p.floatPhase += 0.025;
+                }
+            }
+        }
+
+        function drawCelebrationParticles() {
+            for (let i = 0; i < celebParticles.length; i++) {
+                const p = celebParticles[i];
+                if (!p.born) continue;
+                let px = p.x, py = p.y;
+                if (p.arrived && !celebDispersing) {
+                    px += Math.sin(p.floatPhase) * 0.8;
+                    py += Math.cos(p.floatPhase * 1.3) * 0.8;
+                }
+                const a = celebDispersing ? (p.dispAlpha || 0) : p.alpha;
+                if (a <= 0) continue;
+                cctx.globalAlpha = a;
+                cctx.fillStyle = p.color;
+                cctx.beginPath();
+                cctx.arc(px, py, p.size, 0, Math.PI * 2);
+                cctx.fill();
+            }
+            cctx.globalAlpha = 1;
+        }
+
+        function celebrationHeartPoint(t, scale, cx, cy) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+            return { x: cx + x * scale, y: cy + y * scale };
+        }
+
+        function createCelebrationHeartExplosion(cx, cy, color, size) {
+            const particles = [];
+            const mainCount = 40 + Math.floor(Math.random() * 20);
+            const scale = size * 0.4;
+
+            const mainColorPalette = [
+                color,
+                adjustColor(color, 30),
+                adjustColor(color, -15),
+                adjustColor(color, -30)
+            ];
+
+            const sparkColorPalette = ['#fff', '#fef08a', '#fde68a'];
+
+            for (let i = 0; i < mainCount; i++) {
+                const angle = (i / mainCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+                const speed = 3 + Math.random() * 5;
+                const pColor = mainColorPalette[Math.floor(Math.random() * mainColorPalette.length)];
+                const pSize = 0.4 + Math.random() * 0.4;
+
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    color: pColor,
+                    size: pSize,
+                    alpha: 1,
+                    life: 1,
+                    decay: 0.005 + Math.random() * 0.005,
+                    gravity: 0.018,
+                    friction: 0.97,
+                    phase: 'explode',
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: 0.06 + Math.random() * 0.08
+                });
+            }
+
+            const sparkCount = 25 + Math.floor(Math.random() * 10);
+            for (let i = 0; i < sparkCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 4 + Math.random() * 6;
+                const pColor = sparkColorPalette[Math.floor(Math.random() * sparkColorPalette.length)];
+                const pSize = 0.3 + Math.random() * 0.3;
+
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    color: pColor,
+                    size: pSize,
+                    alpha: 0.8,
+                    life: 1,
+                    decay: 0.02 + Math.random() * 0.015,
+                    gravity: 0.035,
+                    friction: 0.985,
+                    phase: 'spark',
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: 0.15 + Math.random() * 0.15
+                });
+            }
+
+            const flashCount = 8;
+            for (let i = 0; i < flashCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 1 + Math.random() * 3;
+                const pColor = '#fff';
+                const pSize = 1 + Math.random() * 1.2;
+
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    color: pColor,
+                    size: pSize,
+                    alpha: 1,
+                    life: 1,
+                    decay: 0.03 + Math.random() * 0.02,
+                    gravity: 0,
+                    friction: 0.99,
+                    phase: 'flash',
+                    twinkle: 0,
+                    twinkleSpeed: 0.4,
+                    isExplosionFlash: true
+                });
+            }
+
+            return particles;
+        }
+
+        function adjustColor(color, amount) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+            const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+            return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+        }
+
+        function createCelebrationRocket(targetX, targetY) {
+            const startX = targetX + (Math.random() - 0.5) * 200;
+            const startY = CH + 50;
+            const angle = Math.atan2(targetY - startY, targetX - startX);
+            const speed = 12 + Math.random() * 4;
+            const colors = ['#ec4899', '#f472b6', '#fb7185', '#fbbf24', '#f59e0b', '#a78bfa', '#c084fc', '#34d399', '#60a5fa', '#22d3ee', '#34d399'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            return {
+                x: startX,
+                y: startY,
+                targetX: targetX,
+                targetY: targetY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                color: color,
+                trail: [],
+                trailSparks: [],
+                size: 2.2,
+                brightness: 1,
+                stage: 'ascend',
+                isFinal: false
+            };
+        }
+
+        function createCelebrationFinalRocket(targetX, targetY) {
+            const startX = CW / 2;
+            const startY = CH + 80;
+            const angle = Math.atan2(targetY - startY, targetX - startX);
+            const speed = 14;
+            return {
+                x: startX,
+                y: startY,
+                targetX: targetX,
+                targetY: targetY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                color: '#a855f7',
+                trail: [],
+                trailSparks: [],
+                size: 4,
+                brightness: 1,
+                stage: 'ascend',
+                isFinal: true
+            };
+        }
+
+        function assignHeartTargetsToFireworkParticles() {
+            const cx = CW / 2;
+            const cy = CH / 2 - 30;
+            const scale = Math.min(CW, CH) * 0.022;
+            const n = celebFireworkParticles.length;
+            if (n === 0) {
+                // 没有粒子时直接生成一批
+                celebFireworkParticles = buildFinalHeartParticles();
+                celebHeartParticles = celebFireworkParticles;
+                return;
+            }
+
+            // 生成爱心轮廓目标点
+            const heartTargets = [];
+            for (let i = 0; i < n; i++) {
+                const t = (i / n) * Math.PI * 2;
+                const layerScale = scale * (0.85 + ((i % 5) / 5) * 0.3);
+                const hp = celebrationHeartPoint(t, layerScale, cx, cy);
+                const jitterX = (Math.random() - 0.5) * 8;
+                const jitterY = (Math.random() - 0.5) * 8;
+                heartTargets.push({ x: hp.x + jitterX, y: hp.y + jitterY });
+            }
+            // 洗牌让分配更自然
+            for (let i = heartTargets.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [heartTargets[i], heartTargets[j]] = [heartTargets[j], heartTargets[i]];
+            }
+
+            for (let i = 0; i < n; i++) {
+                const p = celebFireworkParticles[i];
+                const tgt = heartTargets[i];
+                p.targetX = tgt.x;
+                p.targetY = tgt.y;
+                p.phase = 'formHeart';
+                p.ease = 0.005 + Math.random() * 0.004;
+                p.arrived = false;
+                p.holdTime = 0;
+                // 保持粒子不消失
+                p.life = 1;
+                p.alpha = 1;
+                p.decay = 0;
+            }
+            celebHeartParticles = celebFireworkParticles;
+        }
+
+        function buildFinalHeartExplosion(cx, cy) {
+            const centerX = cx || CW / 2;
+            const centerY = cy || CH / 2 - 30;
+            // 爱心尺寸：缩小但装得下屏幕（居中构图）
+            const scale = Math.min(CW, CH) * 0.030;
+            const particles = [];
+
+            // ===== 颜色梯度：外缘亮白 → 内侧深红 =====
+            const tipColors  = ['#ffffff', '#fffbeb', '#fef3c7'];             // 尖刺最外端：纯白
+            const outerColors = ['#fff1f2', '#ffe4e6', '#fecaca'];            // 外层：浅粉白
+            const midColors  = ['#fca5a5', '#f87171', '#ef4444'];             // 中层：亮红
+            const baseColors = ['#dc2626', '#b91c1c', '#991b1b', '#7f1d1d'];  // 根部：深红
+            const edgeColors = ['#ffffff', '#fff5f5', '#fef3c7', '#fca5a5', '#f87171']; // 轮廓：红白火花
+
+            // ====== 1. 爱心空心轮廓（细密红白火花粒子构成闭合爱心） ======
+            const edgeCount = 220;
+            for (let i = 0; i < edgeCount; i++) {
+                const t = (i / edgeCount) * Math.PI * 2;
+                const hp = celebrationHeartPoint(t, scale, centerX, centerY);
+                const jitterX = (Math.random() - 0.5) * 1.8;
+                const jitterY = (Math.random() - 0.5) * 1.8;
+                const tx = hp.x + jitterX;
+                const ty = hp.y + jitterY;
+                const angle = Math.atan2(ty - centerY, tx - centerX);
+                const dist = Math.hypot(tx - centerX, ty - centerY);
+                const speed = (dist / 13) * (0.8 + Math.random() * 0.3);
+
+                particles.push({
+                    x: centerX,
+                    y: centerY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    targetX: tx,
+                    targetY: ty,
+                    color: edgeColors[Math.floor(Math.random() * edgeColors.length)],
+                    size: 0.9 + Math.random() * 0.7,
+                    baseSize: 0.9 + Math.random() * 0.7,
+                    alpha: 0,
+                    fadeIn: true,
+                    fadeInSpeed: 0.09 + Math.random() * 0.05,
+                    life: 1,
+                    decay: 0,
+                    gravity: 0,
+                    phase: 'explodeOut',
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: 0.1 + Math.random() * 0.1,
+                    twinkleIntensity: 0.5,
+                    arrived: false,
+                    floatPhase: Math.random() * Math.PI * 2,
+                    floatSpeed: 0.014 + Math.random() * 0.014,
+                    floatAmount: 0.25 + Math.random() * 0.3,
+                    delay: Math.random() * 60,
+                    layer: 'edge',
+                    pulsePhase: Math.random() * Math.PI * 2,
+                    pulseSpeed: 0.05 + Math.random() * 0.03,
+                    glowSize: 2.5,
+                    restX: 0,
+                    restY: 0
+                });
+            }
+
+            // ====== 2. 放射状尖刺（火花向外放射迸出尖刺，白→深红渐变） ======
+            const spikeCount = 72;          // 72 根尖刺规整放射
+            const particlesPerSpike = 7;    // 每根尖刺 7 个粒子
+            for (let i = 0; i < spikeCount; i++) {
+                const t = (i / spikeCount) * Math.PI * 2;
+                const startHp = celebrationHeartPoint(t, scale, centerX, centerY);
+                const dirAngle = Math.atan2(startHp.y - centerY, startHp.x - centerX);
+                const spikeLen = scale * (1.0 + Math.random() * 1.2);
+                const spikeDelay = Math.random() * 100;
+
+                for (let j = 0; j < particlesPerSpike; j++) {
+                    const ratio = j / (particlesPerSpike - 1);
+                    const distFromEdge = spikeLen * ratio;
+                    const tx = startHp.x + Math.cos(dirAngle) * distFromEdge;
+                    const ty = startHp.y + Math.sin(dirAngle) * distFromEdge;
+                    let color;
+                    if (ratio < 0.25) {
+                        color = baseColors[Math.floor(Math.random() * baseColors.length)];
+                    } else if (ratio < 0.55) {
+                        color = midColors[Math.floor(Math.random() * midColors.length)];
+                    } else if (ratio < 0.8) {
+                        color = outerColors[Math.floor(Math.random() * outerColors.length)];
+                    } else {
+                        color = tipColors[Math.floor(Math.random() * tipColors.length)];
+                    }
+                    const pSize = 0.5 + ratio * 1.0 + Math.random() * 0.25;
+                    const startAngle = Math.atan2(ty - centerY, tx - centerX);
+                    const startDist = Math.hypot(tx - centerX, ty - centerY);
+                    const speed = (startDist / 14) * (0.7 + Math.random() * 0.3);
+
+                    particles.push({
+                        x: centerX,
+                        y: centerY,
+                        vx: Math.cos(startAngle) * speed,
+                        vy: Math.sin(startAngle) * speed,
+                        targetX: tx,
+                        targetY: ty,
+                        color: color,
+                        size: pSize,
+                        baseSize: pSize,
+                        alpha: 0,
+                        fadeIn: true,
+                        fadeInSpeed: 0.07 + Math.random() * 0.04,
+                        life: 1,
+                        decay: 0,
+                        gravity: 0,
+                        phase: 'explodeOut',
+                        twinkle: Math.random() * Math.PI * 2,
+                        twinkleSpeed: 0.12 + Math.random() * 0.1,
+                        twinkleIntensity: 0.5 + ratio * 0.35,
+                        arrived: false,
+                        floatPhase: Math.random() * Math.PI * 2,
+                        floatSpeed: 0.02 + Math.random() * 0.02,
+                        floatAmount: 0.4 + Math.random() * 0.6,
+                        delay: spikeDelay + j * 6,
+                        layer: 'spike',
+                        spikeRatio: ratio,
+                        pulsePhase: Math.random() * Math.PI * 2,
+                        pulseSpeed: 0.06 + Math.random() * 0.03,
+                        glowSize: 1.8 + ratio * 1.4,
+                        restX: 0,
+                        restY: 0
+                    });
+                }
+            }
+
+            // ====== 3. 细碎星光颗粒（富有动态迸发感） ======
+            const sparkCount = 90;
+            for (let i = 0; i < sparkCount; i++) {
+                const t = Math.random() * Math.PI * 2;
+                const startHp = celebrationHeartPoint(t, scale, centerX, centerY);
+                const dirAngle = Math.atan2(startHp.y - centerY, startHp.x - centerX);
+                const flyDist = scale * (0.4 + Math.random() * 2.0);
+                const tx = startHp.x + Math.cos(dirAngle) * flyDist;
+                const ty = startHp.y + Math.sin(dirAngle) * flyDist;
+                const angle = Math.atan2(ty - centerY, tx - centerX);
+                const dist = Math.hypot(tx - centerX, ty - centerY);
+                const speed = (dist / 12) * (0.6 + Math.random() * 0.5);
+                const delay = 60 + Math.random() * 280;
+                const isWhite = Math.random() < 0.65;
+                const pColor = isWhite
+                    ? tipColors[Math.floor(Math.random() * tipColors.length)]
+                    : (Math.random() < 0.5
+                        ? midColors[Math.floor(Math.random() * midColors.length)]
+                        : outerColors[Math.floor(Math.random() * outerColors.length)]);
+                const pSize = 0.3 + Math.random() * 0.5;
+
+                particles.push({
+                    x: centerX,
+                    y: centerY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    targetX: tx,
+                    targetY: ty,
+                    color: pColor,
+                    size: pSize,
+                    baseSize: pSize,
+                    alpha: 0,
+                    fadeIn: true,
+                    fadeInSpeed: 0.09 + Math.random() * 0.04,
+                    life: 1,
+                    decay: 0.003 + Math.random() * 0.005,
+                    gravity: 0.006,
+                    phase: 'spark',
+                    twinkle: Math.random() * Math.PI * 2,
+                    twinkleSpeed: 0.18 + Math.random() * 0.2,
+                    twinkleIntensity: 0.65,
+                    arrived: false,
+                    floatPhase: Math.random() * Math.PI * 2,
+                    floatSpeed: 0.025 + Math.random() * 0.025,
+                    floatAmount: 0.7 + Math.random() * 0.8,
+                    delay: delay,
+                    layer: 'spark',
+                    trail: [],
+                    trailLength: 2 + Math.floor(Math.random() * 3)
+                });
+            }
+
+            return particles;
+        }
+
+        function updateCelebrationFirework(now) {
+            if (!celebFireworkActive || celebFireworkFrozen) return;
+
+            const elapsed = (now - celebFireworkStartTime) / 1000;
+            const totalDuration = fireworkDuration;
+            const progress = elapsed / totalDuration;
+
+            if (progress >= 1) {
+                if (!celebHeartForming) {
+                    celebHeartForming = true;
+                    celebFireworkRockets = [];
+                    celebFireworkParticles = [];
+                    celebHeartParticles = buildFinalHeartExplosion();
+                    celebHeartExplodeStartTime = now;
+                }
+                return;
+            }
+
+            if (celebHeartForming) return;
+
+            if (celebFinalRocketLaunched) {
+                // 最后阶段只保留一颗大烟花，不再生成其他烟花
+            } else {
+                const spawnRate = 0.8;
+
+                if (Math.random() < spawnRate * 0.05) {
+                    const tx = CW * 0.1 + Math.random() * CW * 0.8;
+                    const ty = CH * 0.1 + Math.random() * CH * 0.35;
+                    celebFireworkRockets.push(createCelebrationRocket(tx, ty));
+                }
+
+                if (progress > 0.75 && Math.random() < 0.02) {
+                    const cx = CW * 0.5 + (Math.random() - 0.5) * CW * 0.6;
+                    const cy = CH * 0.3 + Math.random() * CH * 0.2;
+                    const colors = ['#ec4899', '#fbbf24', '#a78bfa', '#34d399', '#60a5fa', '#f472b6'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const size = 0.8 + Math.random() * 1.2;
+                    const newParticles = createCelebrationHeartExplosion(cx, cy, color, size);
+                    celebFireworkParticles.push(...newParticles);
+                }
+
+                if (progress > 0.92 && !celebFinalRocketLaunched) {
+                    celebFinalRocketLaunched = true;
+                    const finalRocket = createCelebrationFinalRocket(CW / 2, CH * 0.35);
+                    celebFireworkRockets.push(finalRocket);
+                }
+            }
+
+            for (let i = celebFireworkRockets.length - 1; i >= 0; i--) {
+                const r = celebFireworkRockets[i];
+                r.trail.push({ x: r.x, y: r.y, alpha: 1 });
+                if (r.trail.length > 25) r.trail.shift();
+                for (let j = 0; j < r.trail.length; j++) {
+                    r.trail[j].alpha *= 0.88;
+                }
+
+                if (Math.random() < 0.5) {
+                    r.trailSparks.push({
+                        x: r.x + (Math.random() - 0.5) * 4,
+                        y: r.y + (Math.random() - 0.5) * 4,
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: Math.random() * 2,
+                        alpha: 0.8 + Math.random() * 0.2,
+                        life: 1,
+                        decay: 0.03 + Math.random() * 0.02,
+                        size: 0.5 + Math.random() * 0.5,
+                        color: '#fbbf24'
+                    });
+                }
+
+                for (let j = r.trailSparks.length - 1; j >= 0; j--) {
+                    const s = r.trailSparks[j];
+                    s.x += s.vx;
+                    s.y += s.vy;
+                    s.vy += 0.1;
+                    s.life -= s.decay;
+                    s.alpha = s.life;
+                    if (s.life <= 0) {
+                        r.trailSparks.splice(j, 1);
+                    }
+                }
+
+                r.x += r.vx;
+                r.y += r.vy;
+                r.vy += 0.06;
+                r.brightness -= 0.002;
+
+                const distToTarget = Math.hypot(r.x - r.targetX, r.y - r.targetY);
+                if (distToTarget < 30 || r.vy > 0) {
+                    if (r.isFinal) {
+                        celebHeartForming = true;
+                        celebFireworkRockets = [];
+                        celebFireworkParticles = [];
+                        celebHeartParticles = buildFinalHeartExplosion(r.x, r.y);
+                        celebHeartExplodeStartTime = performance.now();
+                        return;
+                    }
+
+                    const size = 1.2 + Math.random() * 2;
+                    const newParticles = createCelebrationHeartExplosion(r.x, r.y, r.color, size);
+                    celebFireworkParticles.push(...newParticles);
+
+                    for (let k = 0; k < 8; k++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const speed = 1 + Math.random() * 3;
+                        celebFireworkParticles.push({
+                            x: r.x,
+                            y: r.y,
+                            vx: Math.cos(angle) * speed,
+                            vy: Math.sin(angle) * speed,
+                            color: '#fff',
+                            size: 1.5 + Math.random() * 2,
+                            alpha: 1,
+                            life: 1,
+                            decay: 0.03 + Math.random() * 0.02,
+                            gravity: 0,
+                            phase: 'flash',
+                            twinkle: 0,
+                            twinkleSpeed: 0.5,
+                            isExplosionFlash: true
+                        });
+                    }
+
+                    celebFireworkRockets.splice(i, 1);
+                }
+            }
+
+            for (let i = celebFireworkParticles.length - 1; i >= 0; i--) {
+                const p = celebFireworkParticles[i];
+                p.twinkle += p.twinkleSpeed;
+
+                if (p.phase === 'explode') {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= p.friction;
+                    p.vy *= p.friction;
+                    p.vy += p.gravity;
+                } else if (p.phase === 'spark') {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.vx *= p.friction;
+                    p.vy *= p.friction;
+                } else if (p.phase === 'flash') {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= p.friction;
+                    p.vy *= p.friction;
+                    if (p.isExplosionFlash) {
+                        p.alpha = Math.max(0, p.alpha - 0.05);
+                    }
+                }
+
+                p.life -= p.decay;
+                if (!p.isExplosionFlash) {
+                    p.alpha = Math.max(0, p.life);
+                }
+
+                if (p.alpha <= 0 || p.life <= 0) {
+                    celebFireworkParticles.splice(i, 1);
+                }
+            }
+        }
+
+        function drawCelebrationFirework() {
+            if (!celebFireworkActive) return;
+
+            cctx.globalCompositeOperation = 'lighter';
+
+            for (let i = 0; i < celebFireworkRockets.length; i++) {
+                const r = celebFireworkRockets[i];
+                // 缓存火箭尾迹颜色（避免每帧每点重复 adjustColor 计算）
+                if (!r._trailColor) r._trailColor = adjustColor(r.color, -20);
+                const trailColor = r._trailColor;
+                const rSize = r.size;
+
+                for (let j = 0; j < r.trailSparks.length; j++) {
+                    const s = r.trailSparks[j];
+                    cctx.globalAlpha = s.alpha * 0.8;
+                    cctx.fillStyle = s.color;
+                    cctx.beginPath();
+                    cctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    cctx.fill();
+                }
+
+                const trailLen = r.trail.length;
+                for (let j = 0; j < trailLen; j++) {
+                    const t = r.trail[j];
+                    const trailAlpha = t.alpha * 0.6;
+                    const trailSize = rSize * (0.3 + j / trailLen * 0.5);
+                    cctx.globalAlpha = trailAlpha;
+                    cctx.fillStyle = trailColor;
+                    cctx.beginPath();
+                    cctx.arc(t.x, t.y, trailSize, 0, Math.PI * 2);
+                    cctx.fill();
+                }
+
+                cctx.globalAlpha = r.brightness;
+                cctx.fillStyle = '#fff';
+                cctx.beginPath();
+                cctx.arc(r.x, r.y, rSize, 0, Math.PI * 2);
+                cctx.fill();
+
+                cctx.globalAlpha = r.brightness * 0.6;
+                cctx.fillStyle = r.color;
+                cctx.beginPath();
+                cctx.arc(r.x, r.y, rSize * 1.5, 0, Math.PI * 2);
+                cctx.fill();
+            }
+
+            for (let i = 0; i < celebFireworkParticles.length; i++) {
+                const p = celebFireworkParticles[i];
+                const twinkleAlpha = p.alpha * (0.65 + Math.sin(p.twinkle) * 0.35);
+
+                if (p.isExplosionFlash) {
+                    cctx.globalAlpha = p.alpha;
+                    cctx.fillStyle = p.color;
+                    cctx.beginPath();
+                    cctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
+                    cctx.fill();
+                    cctx.globalAlpha = p.alpha * 0.5;
+                    cctx.beginPath();
+                    cctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
+                    cctx.fill();
+                }
+
+                cctx.globalAlpha = twinkleAlpha;
+                cctx.fillStyle = p.color;
+                cctx.beginPath();
+                cctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                cctx.fill();
+            }
+
+            if (celebHeartForming && celebHeartParticles.length > 0) {
+                for (let i = 0; i < celebHeartParticles.length; i++) {
+                    const p = celebHeartParticles[i];
+                    const twinkleIntensity = p.twinkleIntensity || 0.3;
+                    const twinkleAlpha = p.alpha * (1 - twinkleIntensity + Math.sin(p.twinkle) * twinkleIntensity);
+
+                    if (p.phase === 'spark' && p.trail && p.trail.length > 0) {
+                        const pColor = p.color;
+                        const pSize = p.size;
+                        const trailLen = p.trail.length;
+                        for (let j = 0; j < trailLen; j++) {
+                            const t = p.trail[j];
+                            const trailAlpha = t.alpha * 0.3 * (j / trailLen);
+                            const trailSize = pSize * (0.3 + j / trailLen * 0.5);
+                            cctx.globalAlpha = trailAlpha;
+                            cctx.fillStyle = pColor;
+                            cctx.beginPath();
+                            cctx.arc(t.x, t.y, trailSize, 0, Math.PI * 2);
+                            cctx.fill();
+                        }
+                    }
+
+                    if (p.isStar) {
+                        drawStar(cctx, p.x, p.y, p.starPoints || 4, p.size, p.size * 0.4, p.color, twinkleAlpha);
+                    } else if (p.phase !== 'spark') {
+                        // 性能优化：从 4 层 arc 合并为 2 层（外发光 + 核心亮点）
+                        const glow = p.glowSize || 2;
+                        const pSize = p.size;
+                        const pColor = p.color;
+
+                        // 外发光（合并原来的 3 层外圈为 1 层）
+                        cctx.globalAlpha = twinkleAlpha * 0.32;
+                        cctx.fillStyle = pColor;
+                        cctx.beginPath();
+                        cctx.arc(p.x, p.y, pSize * glow * 1.5, 0, Math.PI * 2);
+                        cctx.fill();
+
+                        // 核心亮点（高 alpha）
+                        cctx.globalAlpha = twinkleAlpha;
+                        cctx.fillStyle = pColor;
+                        cctx.beginPath();
+                        cctx.arc(p.x, p.y, pSize, 0, Math.PI * 2);
+                        cctx.fill();
+                    } else {
+                        cctx.globalAlpha = twinkleAlpha * 0.4;
+                        cctx.fillStyle = p.color;
+                        cctx.beginPath();
+                        cctx.arc(p.x, p.y, p.size * 1.8, 0, Math.PI * 2);
+                        cctx.fill();
+
+                        cctx.globalAlpha = twinkleAlpha;
+                        cctx.fillStyle = p.color;
+                        cctx.beginPath();
+                        cctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        cctx.fill();
+                    }
+                }
+            }
+
+            cctx.globalAlpha = 1;
+            cctx.globalCompositeOperation = 'source-over';
+        }
+
+        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color, alpha) {
+            let rot = Math.PI / 2 * 3;
+            let x = cx;
+            let y = cy;
+            const step = Math.PI / spikes;
+
+            ctx.globalAlpha = alpha * 0.4;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(cx, cy, outerRadius * 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - outerRadius);
+            for (let i = 0; i < spikes; i++) {
+                x = cx + Math.cos(rot) * outerRadius;
+                y = cy + Math.sin(rot) * outerRadius;
+                ctx.lineTo(x, y);
+                rot += step;
+
+                x = cx + Math.cos(rot) * innerRadius;
+                y = cy + Math.sin(rot) * innerRadius;
+                ctx.lineTo(x, y);
+                rot += step;
+            }
+            ctx.lineTo(cx, cy - outerRadius);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function updateCelebrationHeartForming(now) {
+            if (!celebHeartForming) return;
+
+            const elapsed = now - celebHeartExplodeStartTime;
+            let allArrived = true;
+
+            // 更新全局心跳相位（节奏：双跳一停，模拟心跳 lub-dub）
+            // 心跳周期约 1.2s（约 50 BPM 慢心跳，看起来更温馨）
+            celebHeartBeatPhase += 0.018;
+            // 心跳脉冲：每个周期内有两次跳动
+            const beatT = celebHeartBeatPhase % (Math.PI * 2);
+            // 主跳（lub）：快速膨胀后回落
+            let beat = 0;
+            if (beatT < 0.6) {
+                beat = Math.sin(beatT / 0.6 * Math.PI) * 0.10;
+            } else if (beatT < 1.4) {
+                // 次跳（dub）：较小
+                beat = Math.sin((beatT - 0.6) / 0.8 * Math.PI) * 0.05;
+            } else {
+                beat = 0;
+            }
+            celebHeartBeatScale = 1 + beat;
+
+            // 计算爱心中心（用于心跳缩放）
+            let sumX = 0, sumY = 0, n = 0;
+            for (let i = 0; i < celebHeartParticles.length; i++) {
+                const p = celebHeartParticles[i];
+                if (p.phase === 'hold' && p.layer !== 'spark') {
+                    sumX += p.targetX;
+                    sumY += p.targetY;
+                    n++;
+                }
+            }
+            if (n > 0) {
+                celebHeartBeatCenterX = sumX / n;
+                celebHeartBeatCenterY = sumY / n;
+            }
+
+            for (let i = celebHeartParticles.length - 1; i >= 0; i--) {
+                const p = celebHeartParticles[i];
+                const pDelay = p.delay || 0;
+
+                if (elapsed < pDelay) {
+                    allArrived = false;
+                    continue;
+                }
+
+                if (p.fadeIn) {
+                    const fadeSpeed = p.fadeInSpeed || 0.08;
+                    p.alpha = Math.min(1, p.alpha + fadeSpeed);
+                    if (p.alpha >= 1) p.fadeIn = false;
+                }
+
+                if (p.phase === 'explodeOut') {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.935;
+                    p.vy *= 0.935;
+
+                    const dx = p.targetX - p.x;
+                    const dy = p.targetY - p.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < 5 || (Math.abs(p.vx) < 0.25 && Math.abs(p.vy) < 0.25)) {
+                        p.phase = 'hold';
+                        p.arrived = true;
+                        p.vx = 0;
+                        p.vy = 0;
+                        // 记录静止位置（心跳基于此计算，避免累积漂移）
+                        p.restX = p.x;
+                        p.restY = p.y;
+                    } else {
+                        p.vx += dx * 0.004;
+                        p.vy += dy * 0.004;
+                    }
+
+                    if (!p.arrived) allArrived = false;
+                } else if (p.phase === 'spark') {
+                    if (p.trail) {
+                        p.trail.push({ x: p.x, y: p.y, alpha: p.alpha });
+                        if (p.trail.length > (p.trailLength || 4)) p.trail.shift();
+                    }
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity || 0.02;
+                    p.vx *= 0.985;
+                    p.life -= p.decay || 0.01;
+                    p.alpha = Math.max(0, p.life);
+
+                    if (p.alpha <= 0) {
+                        celebHeartParticles.splice(i, 1);
+                        continue;
+                    }
+                    allArrived = false;
+                } else if (p.phase === 'hold') {
+                    const floatSpeed = p.floatSpeed || 0.015;
+                    const floatAmount = p.floatAmount || 0.5;
+                    p.floatPhase += floatSpeed;
+                    p.twinkle += p.twinkleSpeed || 0.05;
+                    const floatX = Math.sin(p.floatPhase) * floatAmount * 0.15;
+                    const floatY = Math.cos(p.floatPhase * 0.8) * floatAmount * 0.15;
+
+                    // 基于 restX/restY 重新计算位置（避免累积漂移）
+                    const restX = (p.restX !== undefined) ? p.restX : p.targetX;
+                    const restY = (p.restY !== undefined) ? p.restY : p.targetY;
+                    let dispX = restX + floatX;
+                    let dispY = restY + floatY;
+
+                    // 应用全局心跳缩放：粒子位置相对中心做缩放
+                    if (p.layer !== 'spark') {
+                        const dxh = dispX - celebHeartBeatCenterX;
+                        const dyh = dispY - celebHeartBeatCenterY;
+                        dispX = celebHeartBeatCenterX + dxh * celebHeartBeatScale;
+                        dispY = celebHeartBeatCenterY + dyh * celebHeartBeatScale;
+                    }
+                    p.x = dispX;
+                    p.y = dispY;
+
+                    if (p.pulseSpeed) {
+                        p.pulsePhase += p.pulseSpeed;
+                    }
+                    // 粒子大小：个体脉动 + 全局心跳脉动
+                    const indivPulse = p.pulseSpeed ? (1 + Math.sin(p.pulsePhase) * 0.15) : 1;
+                    const beatSizeMul = p.layer !== 'spark' ? (1 + (celebHeartBeatScale - 1) * 1.5) : 1;
+                    p.size = (p.baseSize || p.size) * indivPulse * beatSizeMul;
+                }
+
+                if (p.twinkleSpeed) {
+                    p.twinkle += p.twinkleSpeed;
+                }
+            }
+        }
+
+        function drawCelebrationHeartGlow() {
+            return;
+        }
+
+        function startCelebrationFirework() {
+            celebFireworkActive = true;
+            celebFireworkFrozen = false;
+            celebHeartForming = false;
+            celebFireworkParticles = [];
+            celebFireworkRockets = [];
+            celebHeartParticles = [];
+
+            const video = document.getElementById('celebrationVideo');
+            video.classList.add('show');
+            video.play().catch(() => {});
+
+            // 停止 canvas 动画循环（视频接管显示）
+            if (celebrationAnimId) {
+                cancelAnimationFrame(celebrationAnimId);
+                celebrationAnimId = null;
+            }
+        }
+
+        function preloadCelebrationVideo() {
+            const video = document.getElementById('celebrationVideo');
+            video.src = '0725 （3）.mp4';
+            video.loop = false;
+            video.playsInline = true;
+            video.controls = false;
+            video.disablePictureInPicture = true;
+            video.style.pointerEvents = 'none';
+            video.muted = false;
+            video.load();
+        }
+
+        function enterCelebration(skipText) {
+            resizeCelebrationCanvas();
+            celebrationPage.classList.add('show');
+            celebrationActive = true;
+            celebReturnBtn.classList.remove('show');
+
+            if (celebReturnBtn) celebReturnBtn.classList.remove('show');
+
+            // 在用户交互上下文中播放视频（有声音）
+            const video = document.getElementById('celebrationVideo');
+            video.src = '0725 （3）.mp4';
+            video.loop = false;
+            video.playsInline = true;
+            video.controls = false;
+            video.disablePictureInPicture = true;
+            video.style.pointerEvents = 'none';
+            video.muted = false;
+            video.currentTime = 0;
+            video.classList.remove('show');
+
+            // 视频结束前 5 秒显示返回按钮
+            video.onended = () => {
+                if (celebReturnBtn) celebReturnBtn.classList.add('show');
+            };
+            video.ontimeupdate = () => {
+                if (video.duration && video.currentTime >= video.duration - 7.5) {
+                    if (celebReturnBtn) celebReturnBtn.classList.add('show');
+                }
+            };
+
+            video.play().catch(() => {});
+
+            setTimeout(() => {
+                if (skipText) {
+                    // 直接显示视频
+                    video.classList.add('show');
+                    // 停止 canvas 循环
+                    if (celebrationAnimId) {
+                        cancelAnimationFrame(celebrationAnimId);
+                        celebrationAnimId = null;
+                    }
+                    celebFireworkActive = true;
+                } else {
+                    // 先暂停视频，等文字粒子结束后再继续播放并显示
+                    video.pause();
+                    video.currentTime = 0;
+                    celebTextSequence = [
+                        { text: ['恭喜小彭获得', '成就坚定选择'], holdTime: 4000, scale: 1, yOffset: 0 },
+                        { text: ['凭此找作者兑换', '一杯奶茶'], holdTime: 3500, scale: 1, yOffset: 0 }
+                    ];
+                    celebPhaseIndex = 0;
+                    celebDispersing = false;
+                    buildCelebrationParticles();
+                    celebPhaseStartTime = performance.now();
+                    runCelebrationLoop();
+                }
+            }, 600);
+        }
+
+        function runCelebrationLoop() {
+            if (!celebrationActive) return;
+
+            const now = performance.now();
+            cctx.clearRect(0, 0, CW, CH);
+
+            cctx.fillStyle = '#000';
+            cctx.fillRect(0, 0, CW, CH);
+
+            if (celebParticles.length > 0) {
+                updateCelebrationParticles(now);
+                drawCelebrationParticles();
+            }
+
+            if (celebFireworkActive) {
+                updateCelebrationFirework(now);
+                if (celebHeartForming) {
+                    updateCelebrationHeartForming(now);
+                }
+                drawCelebrationFirework();
+                drawCelebrationHeartGlow();
+            }
+
+            celebrationAnimId = requestAnimationFrame(runCelebrationLoop);
+        }
+
+        function exitCelebration() {
+            celebrationActive = false;
+            if (celebrationAnimId) {
+                cancelAnimationFrame(celebrationAnimId);
+                celebrationAnimId = null;
+            }
+            celebParticles = [];
+            celebFireworkActive = false;
+            celebFireworkFrozen = false;
+            celebHeartForming = false;
+            celebFireworkParticles = [];
+            celebFireworkRockets = [];
+            celebHeartParticles = [];
+            if (celebReturnBtn) celebReturnBtn.classList.remove('show');
+
+            // 停止并隐藏视频
+            const video = document.getElementById('celebrationVideo');
+            if (video) {
+                video.pause();
+                video.classList.remove('show');
+                video.onended = null;
+                video.ontimeupdate = null;
+            }
+
+            celebrationPage.classList.remove('show');
+            feedbackArea.classList.add('show');
+        }
+
+        /* ============== 主循环 ============== */
+        let lastTime = performance.now();
+        function loop(now) {
+            const dt = now - lastTime;
+            lastTime = now;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // 气球雨
+            updateBalloons(dt);
+            for (let i = 0; i < balloons.length; i++) {
+                drawBalloon(balloons[i]);
+            }
+
+            // 粒子文字
+            if (textActive) {
+                updateParticles(now);
+                drawParticles();
+            }
+
+            // 蜡笔画蛋糕
+            if (cakeDrawing) {
+                updateCakeDrawing(now);
+                drawCake();
+            }
+
+            // 顶部装饰（蛋糕画完后出现）
+            if (decorItems.length > 0) {
+                drawDecorations();
+            }
+
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+
+        /* ============== 蜡笔画蛋糕 ============== */
+        // 蛋糕以屏幕中下方为基准
+        let cakeDrawing = false;
+        let cakeTriggered = false;
+        let decorTriggered = false;   // 装饰是否已触发
+        let cakeStrokes = [];      // 所有笔画，每笔是 {color, width, points:[]}
+        let cakeTotalPoints = 0;
+        let cakeDrawIndex = 0;     // 已绘制的全局点索引
+        let cakeDrawStartTime = 0;
+        let cakeDrawSpeed = 2;     // 每帧推进的点数（可在设置中调整）
+        let cakeColorScheme = 'purple';  // 蛋糕配色方案
+        let fireworkDuration = 15; // 烟花时长（秒）
+        let hasClickedNegative = false; // 是否点击过不满意/不喜欢
+
+        // 直线插值生成点
+        function linePoints(x1, y1, x2, y2, step) {
+            const pts = [];
+            const dx = x2 - x1, dy = y2 - y1;
+            const dist = Math.hypot(dx, dy);
+            const n = Math.max(1, Math.floor(dist / step));
+            for (let i = 0; i <= n; i++) {
+                const t = i / n;
+                pts.push({ x: x1 + dx * t, y: y1 + dy * t });
+            }
+            return pts;
+        }
+
+        // 椭圆弧采样
+        function arcPoints(cx, cy, rx, ry, a0, a1, step) {
+            const pts = [];
+            const n = Math.max(4, Math.floor(Math.abs(a1 - a0) / step));
+            for (let i = 0; i <= n; i++) {
+                const t = i / n;
+                const a = a0 + (a1 - a0) * t;
+                pts.push({ x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry });
+            }
+            return pts;
+        }
+
+        // 贝塞尔点采样
+        function bezierPoints(p0, p1, p2, p3, step) {
+            const pts = [];
+            const n = Math.max(8, Math.floor(60 / step));
+            for (let i = 0; i <= n; i++) {
+                const t = i / n;
+                const mt = 1 - t;
+                const x = mt*mt*mt*p0.x + 3*mt*mt*t*p1.x + 3*mt*t*t*p2.x + t*t*t*p3.x;
+                const y = mt*mt*mt*p0.y + 3*mt*mt*t*p1.y + 3*mt*t*t*p2.y + t*t*t*p3.y;
+                pts.push({ x, y });
+            }
+            return pts;
+        }
+
+        function buildCakeStrokes() {
+            const strokes = [];
+            // 蛋糕配色方案（可在设置中切换）
+            const colorSchemes = {
+                purple: {
+                    dark: '#6d28d9', main: '#8b5cf6', mid: '#a78bfa',
+                    light: '#c4b5fd', pale: '#ddd6fe',
+                    cream: '#faf5ff', creamShadow: '#e9d5ff', wick: '#4c1d95'
+                },
+                pink: {
+                    dark: '#be185d', main: '#ec4899', mid: '#f472b6',
+                    light: '#f9a8d4', pale: '#fbcfe8',
+                    cream: '#fff1f2', creamShadow: '#fda4af', wick: '#831843'
+                },
+                blue: {
+                    dark: '#1d4ed8', main: '#3b82f6', mid: '#60a5fa',
+                    light: '#93c5fd', pale: '#bfdbfe',
+                    cream: '#eff6ff', creamShadow: '#93c5fd', wick: '#1e3a8a'
+                },
+                green: {
+                    dark: '#15803d', main: '#22c55e', mid: '#4ade80',
+                    light: '#86efac', pale: '#bbf7d0',
+                    cream: '#f0fdf4', creamShadow: '#86efac', wick: '#14532d'
+                },
+                rainbow: {
+                    dark: '#7c3aed', main: '#ec4899', mid: '#f59e0b',
+                    light: '#10b981', pale: '#3b82f6',
+                    cream: '#ffffff', creamShadow: '#e5e7eb', wick: '#1f2937'
+                }
+            };
+            const cs = colorSchemes[cakeColorScheme] || colorSchemes.purple;
+            // 颜色（按所选方案）
+            const PURPLE_DARK = cs.dark;
+            const PURPLE = cs.main;
+            const PURPLE_MID = cs.mid;
+            const PURPLE_LIGHT = cs.light;
+            const PURPLE_PALE = cs.pale;
+            const CREAM = cs.cream;
+            const CREAM_SHADOW = cs.creamShadow;
+            const FLAME = '#fb923c';
+            const FLAME_CORE = '#fde68a';
+            const WICK = cs.wick;
+            const GOLD = '#fbbf24';
+            const PINK = '#f9a8d4';
+
+            const cx = W / 2;
+            const baseY = H * 0.72;  // 蛋糕底部更低，留出顶部空间放蜡烛
+
+            // ===== 底盘（蛋糕托盘）=====
+            const plateW = 380, plateH = 14;
+            const pLeft = cx - plateW/2, pRight = cx + plateW/2;
+            const pTop = baseY, pBottom = baseY + plateH;
+            // 托盘椭圆顶面
+            strokes.push({ color: PURPLE_LIGHT, width: 4,
+                points: arcPoints(cx, pTop, plateW/2, plateH*0.6, 0, Math.PI*2, 0.15)
+            });
+            // 托盘侧面
+            strokes.push({ color: PURPLE_MID, width: 4,
+                points: [].concat(
+                    linePoints(pLeft, pTop, pLeft, pBottom, 3),
+                    linePoints(pLeft, pBottom, pRight, pBottom, 3),
+                    linePoints(pRight, pBottom, pRight, pTop, 3)
+                )
+            });
+
+            // ===== 底层蛋糕（最大层）=====
+            const bw = 320, bh = 80;
+            const bLeft = cx - bw/2, bRight = cx + bw/2;
+            const bBottom = pTop, bTop = bBottom - bh;
+
+            // 底层轮廓
+            strokes.push({ color: PURPLE_DARK, width: 5,
+                points: [].concat(
+                    linePoints(bLeft, bBottom, bLeft, bTop, 4),
+                    linePoints(bLeft, bTop, bRight, bTop, 4),
+                    linePoints(bRight, bTop, bRight, bBottom, 4)
+                )
+            });
+            // 底层顶面椭圆（增加立体感）
+            strokes.push({ color: PURPLE_DARK, width: 3,
+                points: arcPoints(cx, bTop, bw/2, 10, 0, Math.PI, 0.15)
+            });
+
+            // 底层填充（深紫）
+            const fillPts1 = [];
+            for (let yy = bTop + 8; yy < bBottom - 4; yy += 4) {
+                for (let xx = bLeft + 8; xx < bRight - 8; xx += 5) {
+                    fillPts1.push({ x: xx, y: yy });
+                }
+            }
+            strokes.push({ color: PURPLE, width: 4, points: fillPts1 });
+
+            // 底层顶部奶油花边（波浪，更精细）
+            const creamPts1 = [];
+            for (let i = 0; i <= 16; i++) {
+                const t = i / 16;
+                const x = bLeft + t * bw;
+                const y = bTop - Math.abs(Math.sin(t * Math.PI * 4)) * 10 - 4;
+                creamPts1.push({ x, y });
+            }
+            strokes.push({ color: CREAM, width: 9, points: creamPts1 });
+
+            // 底层垂直条纹装饰
+            for (let s = 0; s < 6; s++) {
+                const sx = bLeft + 40 + s * 48;
+                strokes.push({ color: PURPLE_LIGHT, width: 3,
+                    points: linePoints(sx, bTop + 14, sx, bBottom - 8, 4)
+                });
+            }
+
+            // 底层小圆点装饰（糖珠）
+            for (let d = 0; d < 8; d++) {
+                const dx = bLeft + 25 + d * 38;
+                const dy = bBottom - 18;
+                strokes.push({ color: PINK, width: 4,
+                    points: arcPoints(dx, dy, 3, 3, 0, Math.PI*2, 0.4)
+                });
+            }
+
+            // ===== 中层蛋糕 =====
+            const mw = 240, mh = 65;
+            const mLeft = cx - mw/2, mRight = cx + mw/2;
+            const mBottom = bTop - 2, mTop = mBottom - mh;
+
+            // 中层轮廓
+            strokes.push({ color: PURPLE, width: 5,
+                points: [].concat(
+                    linePoints(mLeft, mBottom, mLeft, mTop, 4),
+                    linePoints(mLeft, mTop, mRight, mTop, 4),
+                    linePoints(mRight, mTop, mRight, mBottom, 4)
+                )
+            });
+            // 中层顶面椭圆
+            strokes.push({ color: PURPLE, width: 3,
+                points: arcPoints(cx, mTop, mw/2, 8, 0, Math.PI, 0.15)
+            });
+
+            // 中层填充（中紫）
+            const fillPts2 = [];
+            for (let yy = mTop + 8; yy < mBottom - 4; yy += 4) {
+                for (let xx = mLeft + 8; xx < mRight - 8; xx += 5) {
+                    fillPts2.push({ x: xx, y: yy });
+                }
+            }
+            strokes.push({ color: PURPLE_MID, width: 4, points: fillPts2 });
+
+            // 中层奶油花边
+            const creamPts2 = [];
+            for (let i = 0; i <= 12; i++) {
+                const t = i / 12;
+                const x = mLeft + t * mw;
+                const y = mTop - Math.abs(Math.sin(t * Math.PI * 4)) * 8 - 3;
+                creamPts2.push({ x, y });
+            }
+            strokes.push({ color: CREAM, width: 8, points: creamPts2 });
+
+            // 中层菱形装饰
+            for (let s = 0; s < 4; s++) {
+                const sx = mLeft + 35 + s * 55;
+                const sy = mTop + 32;
+                strokes.push({ color: GOLD, width: 3,
+                    points: [].concat(
+                        linePoints(sx, sy - 8, sx + 6, sy, 3),
+                        linePoints(sx + 6, sy, sx, sy + 8, 3),
+                        linePoints(sx, sy + 8, sx - 6, sy, 3),
+                        linePoints(sx - 6, sy, sx, sy - 8, 3)
+                    )
+                });
+            }
+
+            // ===== 顶层蛋糕（最小层，蜡烛插在这一层顶部）=====
+            const tw = 170, th = 55;
+            const tLeft = cx - tw/2, tRight = cx + tw/2;
+            const tBottom = mTop - 2, tTop = tBottom - th;
+
+            // 顶层轮廓
+            strokes.push({ color: PURPLE_MID, width: 5,
+                points: [].concat(
+                    linePoints(tLeft, tBottom, tLeft, tTop, 4),
+                    linePoints(tLeft, tTop, tRight, tTop, 4),
+                    linePoints(tRight, tTop, tRight, tBottom, 4)
+                )
+            });
+            // 顶层顶面椭圆（蜡烛插在这个面上）
+            strokes.push({ color: PURPLE_MID, width: 3,
+                points: arcPoints(cx, tTop, tw/2, 7, 0, Math.PI, 0.15)
+            });
+
+            // 顶层填充（浅紫）
+            const fillPts3 = [];
+            for (let yy = tTop + 8; yy < tBottom - 4; yy += 4) {
+                for (let xx = tLeft + 8; xx < tRight - 8; xx += 5) {
+                    fillPts3.push({ x: xx, y: yy });
+                }
+            }
+            strokes.push({ color: PURPLE_LIGHT, width: 4, points: fillPts3 });
+
+            // 顶层奶油花边
+            const creamPts3 = [];
+            for (let i = 0; i <= 10; i++) {
+                const t = i / 10;
+                const x = tLeft + t * tw;
+                const y = tTop - Math.abs(Math.sin(t * Math.PI * 4)) * 7 - 3;
+                creamPts3.push({ x, y });
+            }
+            strokes.push({ color: CREAM, width: 7, points: creamPts3 });
+
+            // 顶层小心形装饰
+            for (let s = 0; s < 3; s++) {
+                const sx = tLeft + 35 + s * 50;
+                const sy = tTop + 28;
+                strokes.push({ color: PINK, width: 3,
+                    points: [].concat(
+                        linePoints(sx, sy, sx - 4, sy - 5, 2),
+                        linePoints(sx - 4, sy - 5, sx - 7, sy - 2, 2),
+                        linePoints(sx - 7, sy - 2, sx - 4, sy + 3, 2),
+                        linePoints(sx - 4, sy + 3, sx, sy + 6, 2),
+                        linePoints(sx, sy + 6, sx + 4, sy + 3, 2),
+                        linePoints(sx + 4, sy + 3, sx + 7, sy - 2, 2),
+                        linePoints(sx + 7, sy - 2, sx + 4, sy - 5, 2),
+                        linePoints(sx + 4, sy - 5, sx, sy, 2)
+                    )
+                });
+            }
+
+            // ===== 蜡烛（数字"18"造型蜡烛，插在顶层蛋糕顶面上）=====
+            // 蜡烛底部贴合蛋糕顶面 tTop（不穿模）
+            const candleBaseY = tTop;        // 蜡烛底座坐在蛋糕顶面上（不插入，避免穿模）
+            const candleHeight = 75;        // 蜡烛总高度（两个蜡烛顶部高度一致）
+            // 蜡烛主体用粉色，与紫色蛋糕形成对比，更醒目
+            const CANDLE_COLOR = '#ec4899';      // 粉色蜡烛
+            const CANDLE_FILL = '#f9a8d4';       // 浅粉填充
+            // 统一的笔宽
+            const CANDLE_LW = 8;
+
+            // --- 数字"1" 蜡烛（左侧）---
+            const n1x = cx - 38;            // 数字1的中心x
+            const n1TopY = candleBaseY - candleHeight;
+            const n1w = 16;                 // 数字1的宽度（与8的宽度协调）
+            // 数字1的轮廓：左上撇 + 右侧主干 + 底座（标准3笔）
+            // 主干底部和底座抬高半个笔宽，避免穿入蛋糕
+            const n1BottomY = candleBaseY - CANDLE_LW / 2; // 底座中心抬高，下沿刚好在蛋糕顶面
+            strokes.push({ color: CANDLE_COLOR, width: CANDLE_LW,
+                points: [].concat(
+                    // 左上撇（斜线，从左下到右上连到主干顶部）
+                    linePoints(n1x - n1w/2, n1TopY + 16, n1x + n1w/2, n1TopY, 3),
+                    // 右侧主干（竖直线）—— 底部抬高避免穿模
+                    linePoints(n1x + n1w/2, n1TopY, n1x + n1w/2, n1BottomY, 3),
+                    // 底座横线 —— 抬高避免穿模
+                    linePoints(n1x - n1w/2, n1BottomY, n1x + n1w/2 + 4, n1BottomY, 3)
+                )
+            });
+            // 数字1填充（浅粉）
+            const fillN1 = [];
+            for (let yy = n1TopY + 18; yy < candleBaseY - 2; yy += 4) {
+                for (let xx = n1x + n1w/2 - 7; xx < n1x + n1w/2 + 1; xx += 4) {
+                    fillN1.push({ x: xx, y: yy });
+                }
+            }
+            strokes.push({ color: CANDLE_FILL, width: 3, points: fillN1 });
+            // 蜡烛芯（在1的顶部）
+            const wick1X = n1x + n1w/2;
+            const wick1Y = n1TopY;
+            strokes.push({ color: WICK, width: 2.5,
+                points: linePoints(wick1X, wick1Y, wick1X, wick1Y - 10, 1.5)
+            });
+            // 火焰外层
+            strokes.push({ color: FLAME, width: 4,
+                points: arcPoints(wick1X, wick1Y - 15, 5, 10, -Math.PI/2, Math.PI*1.5, 0.25)
+            });
+            // 火焰内层
+            strokes.push({ color: FLAME_CORE, width: 2,
+                points: arcPoints(wick1X, wick1Y - 15, 2.5, 5.5, -Math.PI/2, Math.PI*1.5, 0.25)
+            });
+
+            // --- 数字"8" 蜡烛（右侧，标准8字形：上小下大，高度与1一致）---
+            const n8x = cx + 32;            // 数字8的中心x
+            // 8 的顶部与 1 的顶部对齐（高度一致）
+            const n8TopY = n1TopY;
+            // 标准 8 字：上环小，下环大
+            // 总高度需等于 candleHeight(75)：上环直径 + 间距 + 下环直径 = 75
+            // 上环 2*upperRH + gap + 2*lowerRH = 75
+            const upperRW = 14;             // 上环半宽（较小）
+            const upperRH = 14;             // 上环半高
+            const lowerRW = 18;             // 下环半宽（较大）
+            const lowerRH = 22;             // 下环半高（较大，让8更饱满且高度达标）
+            const ringGap = 1;              // 上下环间距
+            // 上环中心（从顶部往下）
+            const upperCy = n8TopY + upperRH;
+            // 下环中心
+            const lowerCy = upperCy + upperRH + ringGap + lowerRH;
+            // 调整：让8的底部刚好坐在蛋糕顶面上（与1的底座对齐，抬高半个笔宽避免穿模）
+            const n8Bottom = lowerCy + lowerRH;
+            const n8Offset = n1BottomY - n8Bottom;  // 对齐到1的底座高度，下沿贴合蛋糕顶面
+            const upperCyAdj = upperCy + n8Offset;
+            const lowerCyAdj = lowerCy + n8Offset;
+
+            // 上环外轮廓（粉色，较小）
+            strokes.push({ color: CANDLE_COLOR, width: CANDLE_LW,
+                points: arcPoints(n8x, upperCyAdj, upperRW, upperRH, 0, Math.PI*2, 0.18)
+            });
+            // 下环外轮廓（粉色，较大）
+            strokes.push({ color: CANDLE_COLOR, width: CANDLE_LW,
+                points: arcPoints(n8x, lowerCyAdj, lowerRW, lowerRH, 0, Math.PI*2, 0.18)
+            });
+            // 上环内填充（浅粉小圆环）
+            strokes.push({ color: CANDLE_FILL, width: 2.5,
+                points: arcPoints(n8x, upperCyAdj, upperRW - 5, upperRH - 5, 0, Math.PI*2, 0.2)
+            });
+            // 下环内填充（浅粉）
+            strokes.push({ color: CANDLE_FILL, width: 2.5,
+                points: arcPoints(n8x, lowerCyAdj, lowerRW - 5, lowerRH - 5, 0, Math.PI*2, 0.2)
+            });
+            // 蜡烛芯（在8的最顶部，即上环顶部）
+            const wick8X = n8x;
+            const wick8Y = upperCyAdj - upperRH;
+            strokes.push({ color: WICK, width: 2.5,
+                points: linePoints(wick8X, wick8Y, wick8X, wick8Y - 10, 1.5)
+            });
+            // 火焰外层
+            strokes.push({ color: FLAME, width: 4,
+                points: arcPoints(wick8X, wick8Y - 15, 5, 10, -Math.PI/2, Math.PI*1.5, 0.25)
+            });
+            // 火焰内层
+            strokes.push({ color: FLAME_CORE, width: 2,
+                points: arcPoints(wick8X, wick8Y - 15, 2.5, 5.5, -Math.PI/2, Math.PI*1.5, 0.25)
+            });
+
+            // ===== 底部祝福语横幅 =====
+            const bannerY = pBottom + 22;
+            strokes.push({ color: PURPLE_DARK, width: 3,
+                points: arcPoints(cx, bannerY, 130, 10, 0, Math.PI*2, 0.2)
+            });
+            strokes.push({ color: PURPLE_DARK, width: 2,
+                points: linePoints(cx - 130, bannerY, cx - 145, bannerY + 12, 3)
+            });
+            strokes.push({ color: PURPLE_DARK, width: 2,
+                points: linePoints(cx + 130, bannerY, cx + 145, bannerY + 12, 3)
+            });
+
+            return strokes;
+        }
+
+        function startCakeDrawing() {
+            cakeStrokes = buildCakeStrokes();
+            cakeTotalPoints = cakeStrokes.reduce((s, st) => s + st.points.length, 0);
+            cakeDrawIndex = 0;
+            cakeDrawStartTime = performance.now();
+            cakeDrawing = true;
+            decorTriggered = false; // 重置装饰触发
+            decorItems = [];
+        }
+
+        function updateCakeDrawing(now) {
+            if (cakeDrawIndex < cakeTotalPoints) {
+                cakeDrawIndex += cakeDrawSpeed;
+                if (cakeDrawIndex >= cakeTotalPoints) {
+                    cakeDrawIndex = cakeTotalPoints;
+                    // 蛋糕画完，延迟0.8秒后生成装饰
+                    if (!decorTriggered) {
+                        decorTriggered = true;
+                        audio.playCakeDone();
+                        unlockBirthdayAchievement();
+                        setTimeout(() => buildDecorations(), 800);
+                    }
+                }
+            }
+            // 更新装饰动画
+            updateDecorations(now);
+        }
+
+        /* ============== 顶部装饰 ============== */
+        // 装饰类型：彩旗拉花、五角星、爱心、礼花彩带
+        let decorItems = [];     // {type, x, y, size, color, phase, born, alpha, delay}
+        let decorStartTime = 0;
+
+        function buildDecorations() {
+            decorStartTime = performance.now();
+            decorItems = [];
+            const cx = W / 2;
+            const decorTopY = H * 0.12;
+            const decorBottomY = H * 0.42;
+
+            // 1. 彩旗拉花（横跨整个屏幕上方的弧形彩旗）
+            const flagColors = ['#ec4899', '#a78bfa', '#fbbf24', '#34d399', '#60a5fa', '#f87171'];
+            const flagCount = 24;
+            const flagSpan = W;              // 跨度拉长至整个屏幕宽度
+            const flagLeft = 0;              // 从屏幕左边缘开始
+            const flagRight = W;
+            for (let i = 0; i <= flagCount; i++) {
+                const t = i / flagCount;
+                const fx = flagLeft + t * flagSpan;
+                // 弧形下垂的彩旗线（中间下垂更多）
+                const fy = decorTopY + Math.sin(t * Math.PI) * 60 + 10;
+                decorItems.push({
+                    type: 'flag',
+                    x: fx, y: fy,
+                    color: flagColors[i % flagColors.length],
+                    delay: i * 50,
+                    born: false, alpha: 0, size: 12
+                });
+            }
+
+            // 2. 五角星（散布在屏幕上方各处，适度增加）
+            const starPositions = [
+                { x: cx - 280, y: decorTopY + 40 },
+                { x: cx + 300, y: decorTopY + 60 },
+                { x: cx - 380, y: decorBottomY - 10 },
+                { x: cx + 390, y: decorBottomY + 20 },
+                { x: cx - 150, y: decorBottomY + 15 },
+                { x: cx + 160, y: decorBottomY - 25 },
+                { x: cx - 60, y: decorTopY + 110 },
+                { x: cx + 80, y: decorTopY + 130 },
+                { x: cx, y: decorBottomY + 35 }
+            ];
+            starPositions.forEach((s, i) => {
+                decorItems.push({
+                    type: 'star',
+                    x: s.x, y: s.y,
+                    color: ['#fbbf24', '#fde68a', '#f59e0b'][i % 3],
+                    delay: 400 + i * 100,
+                    born: false, alpha: 0, size: 12 + Math.random() * 10,
+                    phase: Math.random() * Math.PI * 2
+                });
+            });
+
+            // 3. 爱心（点缀，适度增加并分散）
+            const heartPositions = [
+                { x: cx - 220, y: decorTopY + 90 },
+                { x: cx + 230, y: decorTopY + 110 },
+                { x: cx - 340, y: decorBottomY + 35 },
+                { x: cx + 350, y: decorBottomY + 45 },
+                { x: cx - 100, y: decorTopY + 150 },
+                { x: cx + 110, y: decorTopY + 170 },
+                { x: cx - 180, y: decorBottomY + 60 }
+            ];
+            heartPositions.forEach((h, i) => {
+                decorItems.push({
+                    type: 'heart',
+                    x: h.x, y: h.y,
+                    color: ['#f9a8d4', '#ec4899', '#f472b6'][i % 3],
+                    delay: 700 + i * 110,
+                    born: false, alpha: 0, size: 11 + Math.random() * 7,
+                    phase: Math.random() * Math.PI * 2
+                });
+            });
+
+            // 4. 礼花彩带（从屏幕两侧边缘向中间喷射的彩纸条）
+            for (let i = 0; i < 18; i++) {
+                const fromLeft = i % 2 === 0;
+                decorItems.push({
+                    type: 'confetti',
+                    x: fromLeft ? 0 : W,           // 从屏幕左右边缘喷射
+                    y: decorTopY + 20,
+                    tx: cx + (Math.random() - 0.5) * 300,  // 目标x
+                    ty: decorBottomY + Math.random() * 60,  // 目标y
+                    color: flagColors[i % flagColors.length],
+                    delay: 1000 + i * 60,
+                    born: false, alpha: 0,
+                    curX: 0, curY: 0,
+                    progress: 0
+                });
+            }
+
+            // 装饰基本铺开后，显示蛋糕下方的反馈按钮和返回按钮
+            setTimeout(() => {
+                const fa = document.getElementById('feedbackArea');
+                if (fa) fa.classList.add('show');
+                const bb = document.getElementById('backBtn');
+                if (bb) bb.classList.add('show');
+            }, 2600);
+        }
+
+        function updateDecorations(now) {
+            if (decorItems.length === 0) return;
+            const elapsed = now - decorStartTime;
+            for (let i = 0; i < decorItems.length; i++) {
+                const d = decorItems[i];
+                if (elapsed < d.delay) continue;
+                d.born = true;
+                d.alpha = Math.min(1, d.alpha + 0.04);
+                // 星星和爱心轻微浮动
+                if (d.type === 'star' || d.type === 'heart') {
+                    d.phase += 0.04;
+                }
+                // 礼花彩带向目标移动
+                if (d.type === 'confetti') {
+                    d.progress = Math.min(1, d.progress + 0.015);
+                    d.curX = d.x + (d.tx - d.x) * d.progress;
+                    d.curY = d.y + (d.ty - d.y) * d.progress + Math.sin(d.progress * Math.PI * 3) * 15;
+                }
+            }
+        }
+
+        function drawDecorations() {
+            for (let i = 0; i < decorItems.length; i++) {
+                const d = decorItems[i];
+                if (!d.born || d.alpha <= 0) continue;
+                ctx.globalAlpha = d.alpha;
+                ctx.fillStyle = d.color;
+                ctx.strokeStyle = d.color;
+
+                if (d.type === 'flag') {
+                    // 三角彩旗
+                    let fy = d.y + Math.sin(d.phase || 0) * 2;
+                    ctx.beginPath();
+                    ctx.moveTo(d.x - 7, fy);
+                    ctx.lineTo(d.x + 7, fy);
+                    ctx.lineTo(d.x, fy + 14);
+                    ctx.closePath();
+                    ctx.fill();
+                    // 旗绳
+                    ctx.beginPath();
+                    ctx.lineWidth = 1.5;
+                    ctx.moveTo(d.x - 7, fy);
+                    ctx.lineTo(d.x + 7, fy);
+                    ctx.stroke();
+                } else if (d.type === 'star') {
+                    drawStar(d.x, d.y + Math.sin(d.phase) * 3, d.size, d.color);
+                } else if (d.type === 'heart') {
+                    drawHeart(d.x, d.y + Math.sin(d.phase) * 3, d.size, d.color);
+                } else if (d.type === 'confetti') {
+                    // 彩纸条（小矩形，旋转）
+                    ctx.save();
+                    ctx.translate(d.curX, d.curY);
+                    ctx.rotate(d.progress * Math.PI * 4);
+                    ctx.fillRect(-4, -1.5, 8, 3);
+                    ctx.restore();
+                }
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        // 画五角星
+        function drawStar(cx0, cy0, r, color) {
+            ctx.beginPath();
+            for (let i = 0; i < 10; i++) {
+                const angle = -Math.PI/2 + i * Math.PI / 5;
+                const radius = i % 2 === 0 ? r : r * 0.4;
+                const x = cx0 + Math.cos(angle) * radius;
+                const y = cy0 + Math.sin(angle) * radius;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        // 画爱心
+        function drawHeart(cx0, cy0, size, color) {
+            ctx.beginPath();
+            const s = size / 10;
+            ctx.moveTo(cx0, cy0 + 3*s);
+            ctx.bezierCurveTo(cx0 - 5*s, cy0 - 2*s, cx0 - 8*s, cy0 + 1*s, cx0, cy0 + 7*s);
+            ctx.bezierCurveTo(cx0 + 8*s, cy0 + 1*s, cx0 + 5*s, cy0 - 2*s, cx0, cy0 + 3*s);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        // 计算当前蜡笔尖端位置（最后绘制的点）
+        function getCrayonTip() {
+            let drawn = cakeDrawIndex;
+            for (let s = 0; s < cakeStrokes.length; s++) {
+                const st = cakeStrokes[s];
+                if (drawn <= st.points.length) {
+                    const idx = Math.max(0, Math.min(st.points.length - 1, drawn - 1));
+                    return { x: st.points[idx].x, y: st.points[idx].y, strokeIdx: s };
+                }
+                drawn -= st.points.length;
+            }
+            const last = cakeStrokes[cakeStrokes.length - 1];
+            return { x: last.points[last.points.length-1].x, y: last.points[last.points.length-1].y, strokeIdx: cakeStrokes.length - 1 };
+        }
+
+        function drawCake() {
+            // 绘制已完成的笔画
+            let drawn = cakeDrawIndex;
+            for (let s = 0; s < cakeStrokes.length; s++) {
+                const st = cakeStrokes[s];
+                const count = Math.min(drawn, st.points.length);
+                if (count <= 0) {
+                    drawn -= st.points.length;
+                    if (drawn < 0) drawn = 0;
+                    continue;
+                }
+                ctx.beginPath();
+                ctx.strokeStyle = st.color;
+                ctx.lineWidth = st.width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.moveTo(st.points[0].x, st.points[0].y);
+                for (let i = 1; i < count; i++) {
+                    ctx.lineTo(st.points[i].x, st.points[i].y);
+                }
+                ctx.stroke();
+                drawn -= st.points.length;
+                if (drawn < 0) drawn = 0;
+            }
+
+            // 绘制蜡笔（如果在绘制中）
+            if (cakeDrawIndex < cakeTotalPoints) {
+                const tip = getCrayonTip();
+                drawCrayon(tip.x, tip.y);
+            }
+        }
+
+        // 画一只蜡笔（笔尖在 x,y）
+        function drawCrayon(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            // 蜡笔向右上方倾斜
+            ctx.rotate(-Math.PI / 6);
+
+            const len = 70, w = 11;
+            // 笔身（紫色）
+            ctx.beginPath();
+            ctx.rect(0, -w/2, len, w);
+            ctx.fillStyle = '#8b5cf6';
+            ctx.fill();
+            ctx.strokeStyle = '#6d28d9';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // 包装纸条纹
+            ctx.fillStyle = '#ede9fe';
+            ctx.fillRect(len * 0.55, -w/2, 4, w);
+            ctx.fillRect(len * 0.7, -w/2, 4, w);
+
+            // 笔尖（圆锥，向左收拢到 0,0）
+            ctx.beginPath();
+            ctx.moveTo(0, -w/2);
+            ctx.lineTo(-14, 0);
+            ctx.lineTo(0, w/2);
+            ctx.closePath();
+            ctx.fillStyle = '#c4b5fd';
+            ctx.fill();
+            ctx.strokeStyle = '#6d28d9';
+            ctx.stroke();
+
+            // 笔尖最前端（深色）
+            ctx.beginPath();
+            ctx.moveTo(-14, 0);
+            ctx.lineTo(-6, -2);
+            ctx.lineTo(-6, 2);
+            ctx.closePath();
+            ctx.fillStyle = '#4c1d95';
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        /* ============== 触发 ============== */
+        startBtn.addEventListener('click', () => {
+            audio.playClick();
+            // 隐藏欢迎页（带动画）
+            welcome.classList.add('hide');
+
+            // 淡入画布
+            const stage = document.getElementById('stage');
+            if (stage) stage.classList.add('fade-in');
+
+            // 非首次开始时显示跳过按钮
+            if (hasStartedOnce) {
+                skipBtn.classList.add('show');
+            }
+            hasStartedOnce = true;
+
+            // 启动气球雨
+            balloonsActive = true;
+            // 初始仅放少量气球，避免一次性涌入过多
+            for (let i = 0; i < 3; i++) {
+                balloons.push(createBalloon(false));
+            }
+
+            // 启动粒子文字（稍后出现，配合气球）
+            setTimeout(() => {
+                phaseIndex = 0;
+                textFading = false;
+                textDispersing = false;
+                textGlobalAlpha = 1;
+                cakeDrawing = false;
+                cakeTriggered = false;
+                buildTextParticles();
+                textActive = true;
+                phaseStartTime = performance.now();
+            }, 600);
+        });
+
+        /* ============== 返回按钮：重置所有状态，回到开始界面 ============== */
+        backBtn.addEventListener('click', () => {
+            audio.playClick();
+            // 隐藏按钮
+            backBtn.classList.remove('show');
+            skipBtn.classList.remove('show');
+
+            // 重置气球
+            balloonsActive = false;
+            balloons.length = 0;
+            balloonSpawnTimer = 0;
+            balloonColumn = 0;
+
+            // 重置粒子文字
+            textActive = false;
+            textFading = false;
+            textDispersing = false;
+            textGlobalAlpha = 1;
+            particles.length = 0;
+            phaseIndex = 0;
+
+            // 重置蛋糕
+            cakeDrawing = false;
+            cakeTriggered = false;
+            cakeStrokes = [];
+            cakeDrawIndex = 0;
+            cakeTotalPoints = 0;
+            decorTriggered = false;
+            decorItems = [];
+
+            // 重置反馈区
+            feedbackArea.classList.remove('show');
+            feedbackArea.style.opacity = '1';
+            canvas.style.opacity = '1';
+
+            // 显示欢迎页（带动画）
+            welcome.classList.remove('hide');
+            welcome.classList.add('entering');
+            setTimeout(() => welcome.classList.remove('entering'), 1000);
+
+            const stage = document.getElementById('stage');
+            if (stage) stage.classList.remove('fade-in');
+        });
+
+        /* ============== 跳过按钮：直接跳到蛋糕画完（含装饰和反馈） ============== */
+        skipBtn.addEventListener('click', () => {
+            audio.playClick();
+            skipBtn.classList.remove('show');
+
+            // 停止气球生成，清除现有气球
+            balloonsActive = false;
+            balloons.length = 0;
+
+            // 停止粒子文字
+            textActive = false;
+            textDispersing = false;
+            particles.length = 0;
+
+            // 直接把蛋糕画完
+            if (!cakeTriggered) {
+                cakeTriggered = true;
+                startCakeDrawing();
+            }
+            cakeDrawIndex = cakeTotalPoints; // 直接画到最后
+            cakeDrawing = true;
+
+            // 直接生成装饰
+            if (!decorTriggered) {
+                decorTriggered = true;
+                buildDecorations();
+            }
+
+            // 立即显示反馈按钮和返回按钮（不用等2.6秒）
+            feedbackArea.classList.add('show');
+            backBtn.classList.add('show');
+        });
+
+        /* ============== 设置 / 开发者 弹窗 ============== */
+        const settingsBtn = document.getElementById('settingsBtn');
+        const devBtn = document.getElementById('devBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const devModal = document.getElementById('devModal');
+        const settingsClose = document.getElementById('settingsClose');
+        const devClose = document.getElementById('devClose');
+
+        function openModal(modal) { modal.classList.add('show'); }
+        function closeModal(modal) { modal.classList.remove('show'); }
+
+        settingsBtn.addEventListener('click', () => { audio.playClick(); openModal(settingsModal); });
+        devBtn.addEventListener('click', () => { audio.playClick(); openModal(devModal); });
+        settingsClose.addEventListener('click', () => { audio.playClick(); closeModal(settingsModal); });
+        devClose.addEventListener('click', () => { audio.playClick(); closeModal(devModal); });
+
+        // 点击遮罩关闭
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) closeModal(settingsModal);
+        });
+        devModal.addEventListener('click', (e) => {
+            if (e.target === devModal) closeModal(devModal);
+        });
+
+        // 设置项联动
+        document.getElementById('setBalloonCount').addEventListener('change', (e) => {
+            maxBalloons = parseInt(e.target.value, 10);
+        });
+
+        document.getElementById('setHoldTime').addEventListener('change', (e) => {
+            const v = e.target.value;
+            holdScale = v === 'short' ? 0.6 : (v === 'long' ? 1.6 : 1);
+        });
+
+        document.getElementById('setFontSize').addEventListener('change', (e) => {
+            fontScaleSetting = parseFloat(e.target.value);
+        });
+
+        // 背景主题方案
+        const bgThemes = {
+            purple: { bg1: '#f3e8ff', bg2: '#ede9fe', bg3: '#fae8ff', g1: '#d8b4fe', g2: '#e9d5ff' },
+            pink:   { bg1: '#fce7f3', bg2: '#fbcfe8', bg3: '#fff1f2', g1: '#f9a8d4', g2: '#fda4af' },
+            blue:   { bg1: '#dbeafe', bg2: '#e0e7ff', bg3: '#f0f9ff', g1: '#93c5fd', g2: '#a5b4fc' },
+            green:  { bg1: '#dcfce7', bg2: '#d1fae5', bg3: '#f0fdf4', g1: '#86efac', g2: '#a7f3d0' },
+            warm:   { bg1: '#fef3c7', bg2: '#fde68a', bg3: '#fffbeb', g1: '#fcd34d', g2: '#fbbf24' }
+        };
+
+        document.getElementById('setBgColor').addEventListener('change', (e) => {
+            const t = bgThemes[e.target.value];
+            if (!t) return;
+            const root = document.documentElement;
+            root.style.setProperty('--bg-1', t.bg1);
+            root.style.setProperty('--bg-2', t.bg2);
+            root.style.setProperty('--bg-3', t.bg3);
+            root.style.setProperty('--glow-1', t.g1);
+            root.style.setProperty('--glow-2', t.g2);
+        });
+
+        document.getElementById('setCakeColor').addEventListener('change', (e) => {
+            cakeColorScheme = e.target.value;
+        });
+
+        document.getElementById('setCakeSpeed').addEventListener('change', (e) => {
+            cakeDrawSpeed = parseInt(e.target.value, 10);
+        });
+
+        document.getElementById('setFireworkDuration').addEventListener('change', (e) => {
+            fireworkDuration = parseInt(e.target.value, 10);
+        });
+
+        document.getElementById('setVolumeClick').addEventListener('input', (e) => {
+            audio.setVolume('click', parseInt(e.target.value, 10) / 100);
+        });
+        document.getElementById('setVolumeCake').addEventListener('input', (e) => {
+            audio.setVolume('cake', parseInt(e.target.value, 10) / 100);
+        });
+        document.getElementById('setVolumePopup').addEventListener('input', (e) => {
+            audio.setVolume('popup', parseInt(e.target.value, 10) / 100);
+        });
+        document.getElementById('setVolumeClose').addEventListener('input', (e) => {
+            audio.setVolume('close', parseInt(e.target.value, 10) / 100);
+        });
+
+        /* ============== 反馈按钮交互 ============== */
+        const feedbackArea = document.getElementById('feedbackArea');
+        const btnLike = document.getElementById('btnLike');
+        const btnDislike = document.getElementById('btnDislike');
+        const btnUnsatisfied = document.getElementById('btnUnsatisfied');
+        const confirmMask = document.getElementById('confirmMask');
+        const btnConfirmDanger = document.getElementById('btnConfirmDanger');
+        const btnConfirmReturn = document.getElementById('btnConfirmReturn');
+        const sadMask = document.getElementById('sadMask');
+        const sadFinal = document.getElementById('sadFinal');
+        const sadProgress = document.getElementById('sadProgress');
+        const sadProgressFill = document.getElementById('sadProgressFill');
+        const sadProgressLabel = document.getElementById('sadProgressLabel');
+        const sadSpecial = document.getElementById('sadSpecial');
+        const sadSpecialClose = document.getElementById('sadSpecialClose');
+        const btnSadContinue = document.getElementById('btnSadContinue');
+        const btnSadReturn = document.getElementById('btnSadReturn');
+
+        let pendingAction = null;
+
+        /* ============== 伤心弹窗模式 ============== */
+        const SAD_MESSAGES = ['我伤心了', '我心碎了', '我不喜欢你了'];
+        const SAD_GOAL = 50;          // 总目标50个（49普通 + 1特殊）
+        const SAD_REGULAR_TOTAL = 49; // 普通弹窗总生成数49
+        const SAD_SPECIAL_INDEX = 24; // 第24个生成特殊弹窗
+        const SAD_ALIVE_MAX = 25;     // 同屏最多存活25个
+        const SAD_Z_START = 10;       // 普通弹窗z-index起始值（特殊弹窗固定为1）
+        let sadPopups = [];          // 当前存活的普通弹窗元素
+        let sadGeneratedCount = 0;   // 已生成的弹窗总数（含特殊）
+        let specialSpawned = false;  // special popup spawned flag
+        let specialClosed = false;   // special popup closed flag
+        let sadClosedCount = 0;      // closed popup count (regular only, special counted separately)
+        let sadTimer = null;         // popup spawn timer
+        let topZIndex = SAD_Z_START; // current highest z-index
+        let totalPopupsClosed = 0;   // 累计消除弹窗总数（犟种成就用）
+
+        function updateSadProgress() {
+            const total = sadClosedCount + (specialClosed ? 1 : 0);
+            const pct = Math.min(100, (total / SAD_GOAL) * 100);
+            sadProgressFill.style.height = pct + '%';
+            sadProgressLabel.textContent = '消除进度 ' + total + ' / ' + SAD_GOAL;
+        }
+
+        // 生成特殊弹窗（第24个，固定最底层）
+        function spawnSpecialPopup() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const px = Math.random() * Math.max(20, w - 340);
+            const py = Math.random() * Math.max(20, h - 140);
+            sadSpecial.style.left = px + 'px';
+            sadSpecial.style.top = py + 'px';
+            sadSpecial.style.bottom = 'auto';
+            sadSpecial.style.zIndex = 1; // 固定最底层
+            sadSpecial.classList.add('show');
+            specialSpawned = true;
+            sadGeneratedCount++;
+        }
+
+        function spawnSadPopup() {
+            // 同屏上限25
+            if (sadPopups.length >= SAD_ALIVE_MAX) return;
+            // 已生成满50个则不再生成
+            if (sadGeneratedCount >= SAD_GOAL) return;
+
+            audio.playPopup();
+
+            // 下一个是第24个 → 生成特殊弹窗
+            if (sadGeneratedCount + 1 === SAD_SPECIAL_INDEX && !specialSpawned) {
+                spawnSpecialPopup();
+                return;
+            }
+
+            const popup = document.createElement('div');
+            popup.className = 'sad-popup';
+            popup.textContent = SAD_MESSAGES[Math.floor(Math.random() * SAD_MESSAGES.length)];
+
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const px = Math.random() * Math.max(20, w - 500);
+            const py = Math.random() * Math.max(20, h - 180);
+            popup.style.left = px + 'px';
+            popup.style.top = py + 'px';
+
+            topZIndex++;
+            popup.style.zIndex = topZIndex;
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'sad-close';
+            closeBtn.addEventListener('click', () => {
+                if (!popup.parentNode) return;
+                audio.playClose();
+                popup.parentNode.removeChild(popup);
+                const idx = sadPopups.indexOf(popup);
+                if (idx >= 0) sadPopups.splice(idx, 1);
+                sadClosedCount++;
+                totalPopupsClosed++;
+                checkJiangzhongAchievement();
+                updateSadProgress();
+                // 检查特殊弹窗是否可以关闭
+                if (sadPopups.length === 0 && specialSpawned) {
+                    sadSpecial.classList.add('closable');
+                }
+                if (sadClosedCount >= SAD_REGULAR_TOTAL && sadTimer) {
+                    clearInterval(sadTimer);
+                    sadTimer = null;
+                }
+                checkFinishSadMode();
+            });
+            popup.appendChild(closeBtn);
+
+            sadMask.appendChild(popup);
+            sadPopups.push(popup);
+            sadGeneratedCount++;
+        }
+
+        // 检查是否完成50个消除
+        function checkFinishSadMode() {
+            const total = sadClosedCount + (specialClosed ? 1 : 0);
+            if (total >= SAD_GOAL) {
+                finishSadMode();
+            }
+        }
+
+        // 检查犟种成就（累计消除250个弹窗）
+        function checkJiangzhongAchievement() {
+            if (totalPopupsClosed >= 250) {
+                const items = document.querySelectorAll('.easter-secret-list .secret-item');
+                items.forEach(item => {
+                    if (item.textContent.includes('犟种')) {
+                        item.classList.remove('locked');
+                        item.classList.add('unlocked');
+                    }
+                });
+            }
+        }
+
+        function startSadMode() {
+            sadMask.classList.add('show');
+            sadClosedCount = 0;
+            sadGeneratedCount = 0;
+            sadPopups = [];
+            specialSpawned = false;
+            specialClosed = false;
+            topZIndex = SAD_Z_START;
+            updateSadProgress();
+            sadProgress.classList.add('show');
+            sadSpecial.classList.remove('show');
+            sadSpecial.classList.remove('closable');
+            // 立即生成5个
+            for (let i = 0; i < 5; i++) spawnSadPopup();
+            // 一秒5个 => 每200ms补充生成
+            sadTimer = setInterval(() => {
+                spawnSadPopup();
+            }, 200);
+        }
+
+        function finishSadMode() {
+            if (sadTimer) { clearInterval(sadTimer); sadTimer = null; }
+            sadPopups.forEach(p => { if (p.parentNode) p.parentNode.removeChild(p); });
+            sadPopups = [];
+            sadMask.classList.remove('show');
+            sadProgress.classList.remove('show');   // 进度条消失
+            sadSpecial.classList.remove('show');    // 特殊弹窗消失
+            sadFinal.classList.add('show');
+        }
+
+        // 特殊弹窗的叉叉
+        sadSpecialClose.addEventListener('click', () => {
+            if (!sadSpecial.classList.contains('closable')) return;
+            if (specialClosed) return;
+            audio.playClose();
+            specialClosed = true;
+            sadSpecial.classList.remove('show');
+            totalPopupsClosed++;
+            checkJiangzhongAchievement();
+            updateSadProgress();
+            checkFinishSadMode();
+        });
+
+        function exitSadMode(goBack) {
+            if (sadTimer) { clearInterval(sadTimer); sadTimer = null; }
+            sadPopups.forEach(p => { if (p.parentNode) p.parentNode.removeChild(p); });
+            sadPopups = [];
+            sadMask.classList.remove('show');
+            sadProgress.classList.remove('show');
+            sadSpecial.classList.remove('show');
+            sadSpecial.classList.remove('closable');
+            sadFinal.classList.remove('show');
+            sadClosedCount = 0;
+            specialClosed = false;
+            specialSpawned = false;
+            if (goBack) {
+                canvas.style.opacity = '1';
+                feedbackArea.classList.add('show');
+                feedbackArea.style.opacity = '1';
+            } else {
+                canvas.style.opacity = '1';
+            }
+            pendingAction = null;
+        }
+
+        function showConfirm(action) {
+            pendingAction = action;
+            canvas.style.transition = 'opacity 0.5s ease';
+            canvas.style.opacity = '0';
+            feedbackArea.style.transition = 'opacity 0.4s ease';
+            feedbackArea.style.opacity = '0';
+            backBtn.classList.remove('show');
+            setTimeout(() => {
+                feedbackArea.classList.remove('show');
+                confirmMask.classList.add('show');
+            }, 400);
+        }
+
+        function hideConfirm(goBack) {
+            confirmMask.classList.remove('show');
+            if (goBack) {
+                setTimeout(() => {
+                    canvas.style.opacity = '1';
+                    feedbackArea.classList.add('show');
+                    feedbackArea.style.opacity = '1';
+                    backBtn.classList.add('show');
+                    pendingAction = null;
+                }, 300);
+            }
+        }
+
+        function unlockFirmChoiceAchievement() {
+            const items = document.querySelectorAll('.easter-secret-list .secret-item');
+            items.forEach(item => {
+                if (item.textContent.includes('坚定选择')) {
+                    item.classList.remove('locked');
+                    item.classList.add('unlocked');
+                }
+            });
+        }
+
+        function unlockBirthdayAchievement() {
+            const items = document.querySelectorAll('.easter-secret-list .secret-item');
+            items.forEach(item => {
+                if (item.textContent.includes('生日达人')) {
+                    item.classList.remove('locked');
+                    item.classList.add('unlocked');
+                }
+            });
+        }
+
+        btnLike.addEventListener('click', () => {
+            audio.playClick();
+
+            if (celebrationActive) return;
+
+            if (!hasClickedNegative) {
+                unlockFirmChoiceAchievement();
+            }
+            feedbackArea.classList.remove('show');
+            enterCelebration(hasClickedNegative);
+        });
+
+        btnDislike.addEventListener('click', () => { audio.playClick(); hasClickedNegative = true; showConfirm('dislike'); });
+        btnUnsatisfied.addEventListener('click', () => { audio.playClick(); hasClickedNegative = true; showConfirm('unsatisfied'); });
+
+        btnConfirmDanger.addEventListener('click', () => {
+            audio.playClick();
+            confirmMask.classList.remove('show');
+            // 继续选择 → 进入伤心弹窗模式
+            setTimeout(() => {
+                startSadMode();
+            }, 300);
+        });
+
+        btnConfirmReturn.addEventListener('click', () => { audio.playClick(); hideConfirm(true); });
+
+        // 伤心模式结束后的两个按钮
+        // "继续选择"：重新开始弹窗
+        btnSadContinue.addEventListener('click', () => {
+            audio.playClick();
+            sadFinal.classList.remove('show');
+            startSadMode();
+        });
+        // "返回重新选择"：回到三个按钮的选择界面
+        btnSadReturn.addEventListener('click', () => { audio.playClick(); exitSadMode(true); });
+
+        initCelebrationPage();
+    </script>
+</body>
+</html>
