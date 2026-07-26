@@ -590,7 +590,7 @@
             border-radius: 0;
             box-shadow: none;
             font-weight: 400;
-            transform: scale(0.6);
+            transform: scale(1.2);
             transform-origin: center;
             opacity: 0.7;
         }
@@ -1533,7 +1533,6 @@
                     close: 0.5
                 };
                 this.enabled = true;
-                this.recordingVideo = null;
             }
 
             init() {
@@ -1547,29 +1546,6 @@
 
             getVol(key) {
                 return (this.volumes[key] !== undefined ? this.volumes[key] : 0.5);
-            }
-
-            startRecording() {
-                if (!this.enabled) return;
-                if (!this.recordingVideo) {
-                    this.recordingVideo = document.createElement('video');
-                    this.recordingVideo.src = '0726(1).mp4';
-                    this.recordingVideo.loop = false;
-                    this.recordingVideo.playsInline = true;
-                    this.recordingVideo.controls = false;
-                    this.recordingVideo.muted = false;
-                    this.recordingVideo.style.display = 'none';
-                    document.body.appendChild(this.recordingVideo);
-                }
-                this.recordingVideo.currentTime = 0;
-                this.recordingVideo.play().catch(() => {});
-            }
-
-            stopRecording() {
-                if (this.recordingVideo) {
-                    this.recordingVideo.pause();
-                    this.recordingVideo.currentTime = 0;
-                }
             }
 
             playClick() {
@@ -3689,7 +3665,6 @@
             cakeDrawing = true;
             decorTriggered = false; // 重置装饰触发
             decorItems = [];
-            audio.startRecording();
         }
 
         function updateCakeDrawing(now) {
@@ -3697,8 +3672,7 @@
                 cakeDrawIndex += cakeDrawSpeed;
                 if (cakeDrawIndex >= cakeTotalPoints) {
                     cakeDrawIndex = cakeTotalPoints;
-                    // 蛋糕画完，停止录音，延迟0.8秒后生成装饰
-                    audio.stopRecording();
+                    // 蛋糕画完，延迟0.8秒后生成装饰
                     if (!decorTriggered) {
                         decorTriggered = true;
                         audio.playCakeDone();
@@ -4032,7 +4006,6 @@
         /* ============== 返回按钮：重置所有状态，回到开始界面 ============== */
         backBtn.addEventListener('click', () => {
             audio.playClick();
-            audio.stopRecording();
             // 隐藏按钮
             backBtn.classList.remove('show');
             skipBtn.classList.remove('show');
@@ -4095,7 +4068,6 @@
             }
             cakeDrawIndex = cakeTotalPoints; // 直接画到最后
             cakeDrawing = true;
-            audio.stopRecording();
 
             // 直接生成装饰
             if (!decorTriggered) {
