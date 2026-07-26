@@ -1323,6 +1323,10 @@
                     <label>消除弹窗音量</label>
                     <input type="range" id="setVolumeClose" min="0" max="100" value="50" style="width: 120px;">
                 </div>
+                <div class="setting-item">
+                    <label>画蛋糕录音音量</label>
+                    <input type="range" id="setVolumeRecording" min="0" max="100" value="70" style="width: 120px;">
+                </div>
             </div>
             <button class="modal-close" id="settingsClose">关闭</button>
         </div>
@@ -1530,9 +1534,11 @@
                     click: 0.5,
                     cake: 0.5,
                     popup: 0.5,
-                    close: 0.5
+                    close: 0.5,
+                    recording: 0.7
                 };
                 this.enabled = true;
+                this.recordingAudio = null;
             }
 
             init() {
@@ -1546,6 +1552,30 @@
 
             getVol(key) {
                 return (this.volumes[key] !== undefined ? this.volumes[key] : 0.5);
+            }
+
+            startRecording() {
+                if (!this.enabled) return;
+                if (!this.recordingAudio) {
+                    this.recordingAudio = new Audio('0726.MP3');
+                    this.recordingAudio.loop = false;
+                }
+                this.recordingAudio.volume = this.getVol('recording');
+                this.recordingAudio.currentTime = 0;
+                this.recordingAudio.play().catch(() => {});
+            }
+
+            stopRecording() {
+                if (this.recordingAudio) {
+                    this.recordingAudio.pause();
+                    this.recordingAudio.currentTime = 0;
+                }
+            }
+
+            setRecordingVolume(v) {
+                if (this.recordingAudio) {
+                    this.recordingAudio.volume = Math.max(0, Math.min(1, v));
+                }
             }
 
             playClick() {
@@ -1621,6 +1651,9 @@
             setVolume(key, val) {
                 if (this.volumes[key] !== undefined) {
                     this.volumes[key] = Math.max(0, Math.min(1, val));
+                }
+                if (key === 'recording') {
+                    this.setRecordingVolume(this.volumes[key]);
                 }
             }
 
@@ -3665,6 +3698,7 @@
             cakeDrawing = true;
             decorTriggered = false; // 重置装饰触发
             decorItems = [];
+            audio.startRecording();
         }
 
         function updateCakeDrawing(now) {
@@ -3672,7 +3706,8 @@
                 cakeDrawIndex += cakeDrawSpeed;
                 if (cakeDrawIndex >= cakeTotalPoints) {
                     cakeDrawIndex = cakeTotalPoints;
-                    // 蛋糕画完，延迟0.8秒后生成装饰
+                    // 蛋糕画完，停止录音，延迟0.8秒后生成装饰
+                    audio.stopRecording();
                     if (!decorTriggered) {
                         decorTriggered = true;
                         audio.playCakeDone();
@@ -4006,6 +4041,7 @@
         /* ============== 返回按钮：重置所有状态，回到开始界面 ============== */
         backBtn.addEventListener('click', () => {
             audio.playClick();
+            audio.stopRecording();
             // 隐藏按钮
             backBtn.classList.remove('show');
             skipBtn.classList.remove('show');
@@ -4068,6 +4104,7 @@
             }
             cakeDrawIndex = cakeTotalPoints; // 直接画到最后
             cakeDrawing = true;
+            audio.stopRecording();
 
             // 直接生成装饰
             if (!decorTriggered) {
@@ -4161,6 +4198,9 @@
         });
         document.getElementById('setVolumeClose').addEventListener('input', (e) => {
             audio.setVolume('close', parseInt(e.target.value, 10) / 100);
+        });
+        document.getElementById('setVolumeRecording').addEventListener('input', (e) => {
+            audio.setVolume('recording', parseInt(e.target.value, 10) / 100);
         });
 
         /* ============== 反馈按钮交互 ============== */
